@@ -1,59 +1,65 @@
-name: Deploy to Vercel
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
-env:
-  FLUTTER_VERSION: '3.41.1'
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+# Allow the deploy job to publish to GitHub Pages via OIDC.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time; don't cancel an in-progress production deploy.
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      # 1. Checkout code
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. Setup Flutter
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: stable
-          cache: true
+          node-version: 22
+          cache: npm
 
-      # 3. Install dependencies
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
       - name: Install dependencies
-        run: flutter pub get
+        run: npm ci
 
-      # 4. Analyze code
-      - name: Run Flutter analyze
-        run: flutter analyze --no-fatal-infos
+      - name: Lint
+        run: npm run lint
 
-      # 5. Build web
-      - name: Build Flutter Web
-        run: flutter build web --release
+      - name: Typecheck
+        run: npm run typecheck
 
-      # 6. Copy vercel.json into build output
-      - name: Copy vercel.json
-        run: cp vercel.json build/web/vercel.json
+      - name: Build (static export → ./out)
+        run: npm run build
 
-      # 7. Install Vercel CLI
-      - name: Install Vercel CLI
-        run: npm install -g vercel
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
 
-      # 8. Deploy to Vercel (Preview for PRs, Production for main)
-      - name: Deploy to Vercel (Preview)
-        if: github.event_name == 'pull_request'
-        run: vercel deploy --token=${{ secrets.VERCEL_TOKEN }}
-        working-directory: build/web
-
-      - name: Deploy to Vercel (Production)
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
-        working-directory: build/web
+  deploy:
+    # Deploy only on pushes/dispatch to main — PRs run the checks above only.
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

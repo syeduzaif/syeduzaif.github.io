@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Design tokens — "cinematic product journal" (Earth & Clay)
+   Tailwind v4 CSS-first config. @theme values also emit as
+   CSS custom properties on :root, so they work in inline styles.
+   ============================================================ */
+@theme {
+  /* Color */
+  --color-bg: #11100f; /* page background, near-black */
+  --color-surface: #1b1917; /* raised cards / solid nav */
+  --color-cream: #f0e7da; /* primary text */
+  --color-muted: #aaa097; /* secondary text */
+  --color-terracotta: #c8704f; /* key actions & highlights */
+  --color-terracotta-hi: #d98a6b; /* hover / small emphasis (contrast) */
+  --color-olive: #7e8267; /* secondary fills / borders */
+  --color-olive-text: #9aa083; /* small label text (contrast) */
+  --color-sand: #d6b98c; /* metrics, dividers, warm accents */
+
+  /* Fonts (font-serif / font-sans utilities) */
+  --font-serif: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-manrope), system-ui, -apple-system, sans-serif;
+
+  /* Type scale — fluid, editorial (text-* utilities) */
+  --text-eyebrow: 0.8125rem;
+  --text-hero: clamp(2.75rem, 6vw, 5.25rem);
+  --text-h2: clamp(2rem, 4vw, 3.25rem);
+  --text-h3: clamp(1.5rem, 2.5vw, 2rem);
+  --text-lead: clamp(1.125rem, 1.6vw, 1.375rem);
+  --text-body: 1.0625rem;
+
+  /* Radii (rounded-* utilities) */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  /* Motion */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Layout widths (plain vars, used by Container) */
+:root {
+  --width-container: 1216px;
+  --width-reading: 720px;
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* offset anchor targets below the sticky header */
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+/* Visible, warm focus — never removed */
+:focus-visible {
+  outline: 2px solid var(--color-sand);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-terracotta) 40%, transparent);
+  color: var(--color-cream);
+}
+
+/* Static film-grain overlay — warms the near-black, no animation */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Skip link — visible only when focused */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  transform: translateY(-150%);
+  transition: transform 0.2s ease;
+  background: var(--color-surface);
+  color: var(--color-cream);
+  padding: 0.625rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-sand);
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* No-JS / scripting-disabled fallback: show reveal content instead of leaving
+   it at the pre-animation opacity:0 that Framer Motion renders on the server. */
+@media (scripting: none) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
