@@ -33,11 +33,15 @@ fake screens). To upgrade, drop a real (sanitised) file and flip `cover` in
 - **Stupid Alarm** → `public/images/projects/stupid-alarm-cover.png`
 
 Case-study `gallery` visuals (wired via each study's `gaps` notes):
-- **SimpliEd** → sanitised Teacher-app screenshots → `public/images/projects/simplied/`
+- **SimpliEd** → ✅ done — the three-app poster (Student / Teacher / attendance QR, demo
+  accounts) lives in `public/images/projects/simplied/` and renders via `<AppTrio>`
+  on the homepage composition and case-study header. Optional extras: the Parent-app
+  inbox shot and the curriculum screens in `~/Documents/SImpliEdTech/design/`.
 - **Budget Buddy** → expense entry / category budgets / monthly view → `public/images/projects/budget-buddy/`
 - **Stupid Alarm** → prototype screens + short muted demo → `public/images/projects/stupid-alarm/`
 
-(SimpliEd already uses a real cover: `public/images/projects/simplied-cover.png`.)
+(SimpliEd now uses real product screenshots — the old AI-concept `simplied-cover.png`
+was removed.)
 
 ## 🟡 Favicon / app icons
 

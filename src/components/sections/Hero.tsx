@@ -138,8 +138,8 @@ export function Hero() {
             className="absolute top-2 left-0 w-[52%]"
           />
           <MediaFragment
-            src="/images/projects/simplied-cover.png"
-            alt="SimpliEd learning platform interface"
+            src="/images/projects/simplied/teacher-dashboard.jpg"
+            alt="SimpliEd Teacher app dashboard"
             label="Production / released"
             caption="SimpliEd — live on Android & iOS"
             rotate={1.5}

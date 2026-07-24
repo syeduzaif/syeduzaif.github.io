@@ -32,6 +32,11 @@ export interface CaseStudy {
   title: string;
   summary: string;
   cover: Media;
+  /**
+   * Optional three-app poster (Student / Teacher / attendance). When present it
+   * replaces the single cover in the case-study header and homepage visual.
+   */
+  posterApps?: { src: string; alt: string; label: string }[];
   keyMetric: Metric;
   /** Visual identity — per-project accent colour (see lib/accents.ts). */
   accent: MediaTone;
@@ -93,9 +98,26 @@ export const caseStudies: Record<CaseStudy["slug"], CaseStudy> = {
       "Owning mobile features and releases across a production education platform — two live Student and Parent apps and an offline-first Teacher app with an encrypted local database and durable sync. Production work under confidentiality.",
     cover: {
       kind: "image",
-      src: "/images/projects/simplied-cover.png",
-      alt: "SimpliEd learning platform interface",
+      src: "/images/projects/simplied/student-home.jpg",
+      alt: "SimpliEd Student app home screen",
     },
+    posterApps: [
+      {
+        src: "/images/projects/simplied/student-home.jpg",
+        alt: "SimpliEd Student app home with modules for circulars, news, events, attendance, timetable and gradebook",
+        label: "Student app",
+      },
+      {
+        src: "/images/projects/simplied/teacher-dashboard.jpg",
+        alt: "SimpliEd Teacher app dashboard showing today's classes, quick actions, pending grading and the day's schedule",
+        label: "Teacher app",
+      },
+      {
+        src: "/images/projects/simplied/attendance-scan.png",
+        alt: "SimpliEd attendance flow scanning a student QR code and marking the student present",
+        label: "Attendance / QR",
+      },
+    ],
     keyMetric: { value: "~45% faster", label: "Initial load: 3.2s → 1.76s" },
     accent: "blue",
     experiment: { n: "01", kind: "Production system" },
@@ -284,36 +306,6 @@ export const caseStudies: Record<CaseStudy["slug"], CaseStudy> = {
       "Strengthen automated release checks so the store cadence stays safe as the team grows.",
     ],
 
-    // TODO(asset): three screenshots confirmed and captioned — save the files at
-    // these exact paths (public/images/projects/simplied/), then uncomment.
-    // All visible people/data must be demo accounts (Terri Hettinger / Zainab
-    // Siddiqui / James Alex Taylor look like seeded demo data — confirm first).
-    // gallery: [
-    //   {
-    //     kind: "image",
-    //     src: "/images/projects/simplied/student-home.png",
-    //     alt: "SimpliEd Student app home screen with modules for circulars, news, events, attendance, timetable, gradebook and more",
-    //     caption: "Student app — the module home (demo account)",
-    //   },
-    //   {
-    //     kind: "image",
-    //     src: "/images/projects/simplied/teacher-dashboard.png",
-    //     alt: "SimpliEd Teacher app dashboard showing today's classes, quick actions, pending grading tasks and the day's schedule",
-    //     caption: "Teacher app — the teaching day at a glance (demo account)",
-    //   },
-    //   {
-    //     kind: "image",
-    //     src: "/images/projects/simplied/attendance-scan.png",
-    //     alt: "SimpliEd attendance flow scanning a student QR code and marking the student present",
-    //     caption: "Attendance — QR scan marks a student present (demo data)",
-    //   },
-    // ],
-    gaps: [
-      {
-        section: "Visual walkthrough",
-        note: "Three sanitised screenshots are captioned and wired in code — save the files as public/images/projects/simplied/{student-home,teacher-dashboard,attendance-scan}.png and flip the commented `gallery` block in caseStudies.ts.",
-      },
-    ],
   },
 
   "budget-buddy": {

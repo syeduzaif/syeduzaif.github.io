@@ -15,6 +15,7 @@ import { ApproachCard } from "@/components/lab/ApproachCard";
 import { Annotation } from "@/components/lab/Annotation";
 import { MediaFrame } from "@/components/media/MediaFrame";
 import { MediaFragment } from "@/components/lab/MediaFragment";
+import { AppTrio } from "@/components/lab/AppTrio";
 import { ResponsibilityMatrix } from "@/components/ui/ResponsibilityMatrix";
 import { ArchitectureDiagram } from "@/components/ui/ArchitectureDiagram";
 import { ProjectMetric } from "@/components/ui/ProjectMetric";
@@ -453,14 +454,28 @@ export default async function WorkCaseStudyPage({ params }: Params) {
             </dl>
           </div>
 
-          <div className="relative border border-ink/15 bg-paper-soft p-2 shadow-[4px_5px_0_rgb(23_23_23/0.08)]">
-            <MediaFrame
-              media={cs.cover}
-              className="aspect-[4/3]"
-              sizes="(max-width:768px) 100vw, 45vw"
-              priority
-            />
-          </div>
+          {cs.posterApps ? (
+            <div className="grid-paper relative border border-ink/15 bg-paper-soft p-4 shadow-[4px_5px_0_rgb(23_23_23/0.08)] md:p-5">
+              <EditorialLabel className="text-(--accent-ink)">
+                One platform / three surfaces
+              </EditorialLabel>
+              <AppTrio
+                apps={cs.posterApps}
+                priority
+                className="mt-4"
+                note="Demo accounts shown — production data stays private."
+              />
+            </div>
+          ) : (
+            <div className="relative border border-ink/15 bg-paper-soft p-2 shadow-[4px_5px_0_rgb(23_23_23/0.08)]">
+              <MediaFrame
+                media={cs.cover}
+                className="aspect-[4/3]"
+                sizes="(max-width:768px) 100vw, 45vw"
+                priority
+              />
+            </div>
+          )}
         </div>
 
         <ExperimentLegend className="mt-12" />

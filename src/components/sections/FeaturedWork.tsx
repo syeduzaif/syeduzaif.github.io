@@ -8,8 +8,8 @@ import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Reveal } from "@/components/ui/Reveal";
-import { MediaFragment } from "@/components/lab/MediaFragment";
 import { MediaFrame } from "@/components/media/MediaFrame";
+import { AppTrio } from "@/components/lab/AppTrio";
 import { EditorialLabel } from "@/components/lab/EditorialLabel";
 import { ExperimentNumber } from "@/components/lab/ExperimentNumber";
 import { InquiryBlock } from "@/components/lab/InquiryBlock";
@@ -103,39 +103,31 @@ function SimpliEdVisual({ cs }: { cs: CaseStudy }) {
   return (
     <div className="grid-paper relative border border-ink/15 bg-paper-soft p-5 md:p-6">
       <MiniFlow />
-      <div className="mt-4 grid grid-cols-[1.15fr_0.85fr] items-end gap-4">
-        <MediaFragment
-          src={cs.cover.kind === "image" ? cs.cover.src : ""}
-          alt={cs.cover.kind === "image" ? cs.cover.alt : ""}
-          caption="Two live consumer apps + an offline-first Teacher app"
-          rotate={-1}
-          taped
-          sizes="(max-width:768px) 60vw, 320px"
-          aspect="aspect-square"
-        />
-        <div className="space-y-3 pb-2">
-          <div>
-            <span className="font-serif text-2xl leading-none text-ink">
-              3.2s → 1.76s
+      {cs.posterApps && (
+        <AppTrio apps={cs.posterApps} className="mt-5" />
+      )}
+      <div className="mt-5 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-t border-ink/10 pt-4">
+        <div>
+          <span className="font-serif text-2xl leading-none text-ink">
+            3.2s → 1.76s
+          </span>
+          <HandDrawnArrow
+            variant="underline"
+            className="mt-1 block h-2 w-20 text-(--accent)"
+          />
+          <p className="mt-1 font-mono text-[0.62rem] uppercase tracking-[0.12em] text-grey">
+            Initial load, profiled first
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {["TestFlight", "Play Internal"].map((c) => (
+            <span
+              key={c}
+              className="border border-ink/20 bg-paper px-2 py-0.5 font-mono text-[0.58rem] uppercase tracking-[0.1em] text-grey"
+            >
+              {c}
             </span>
-            <HandDrawnArrow
-              variant="underline"
-              className="mt-1 block h-2 w-20 text-(--accent)"
-            />
-            <p className="mt-1 font-mono text-[0.62rem] uppercase tracking-[0.12em] text-grey">
-              Initial load, profiled first
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-1.5">
-            {["TestFlight", "Play Internal"].map((c) => (
-              <span
-                key={c}
-                className="border border-ink/20 bg-paper px-2 py-0.5 font-mono text-[0.58rem] uppercase tracking-[0.1em] text-grey"
-              >
-                {c}
-              </span>
-            ))}
-          </div>
+          ))}
         </div>
       </div>
     </div>
