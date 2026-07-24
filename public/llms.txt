@@ -19,9 +19,9 @@
 
 ## Featured work
 
-- SimpliEd — a production education platform (LMS) for students, parents, and schools. Owns features, performance, and Android/iOS releases across two live Student and Parent apps (10,000+ downloads), plus an offline-first Teacher app with an encrypted local database (Drift + sqlite3mc), durable outbox sync, and a reactive Riverpod 3.x UI. Production work under confidentiality.
-- Budget Buddy — an independent, full-stack budgeting app on Clean Architecture with Firebase Auth/Firestore, a Gemini-powered budgeting advisor, and a GitHub Actions CI/CD pipeline. Repo: https://github.com/syeduzaif/Budget-buddy
-- Stupid Alarm — a behavioural product experiment: an alarm that only stops once the user physically sits up. Prototyped in Flutter and documented as a build-in-public video series. Repo: https://github.com/syeduzaif/stupid_alarm_flutter
+- SimpliEd — a production education platform (LMS) for students, parents, and schools. Owns mobile features, performance, offline behaviour, and Android/iOS releases across two live Student and Parent apps and an offline-first Teacher app (encrypted local database with Drift + sqlite3mc, durable outbox sync, reactive Riverpod 3.x UI). The platform has 10,000+ cumulative downloads across the Play Store and App Store — a team/product outcome, not a personal acquisition claim. Production work under confidentiality.
+- Budget Buddy — an independent budgeting product designed to reduce the friction of recording expenses and maintaining financial habits, with an AI advisor as a supporting feature (not the point). Offline-first capture that syncs when online. In active development, not yet published. Repo: https://github.com/syeduzaif/Budget-buddy
+- Stupid Alarm — a behavioural product experiment exploring whether physical posture detection (e.g. sitting up) can reduce unconscious snoozing while staying safe and accessible. Concept/prototype in Flutter, documented as a build-in-public series; effectiveness not yet validated. Repo: https://github.com/syeduzaif/stupid_alarm_flutter
 
 ## Links
 

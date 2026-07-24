@@ -5,6 +5,8 @@
 export const siteConfig = {
   name: "Syed Uzaif",
   title: "Mobile Product Engineer",
+  /** Persistent lab label shown in the nav and footer. */
+  lab: "Product Lab",
   url: "https://syeduzaif.github.io",
   locale: "en",
 
@@ -13,21 +15,30 @@ export const siteConfig = {
     "I turn unclear ideas into thoughtful mobile products by combining engineering, product thinking, visual judgment, and end-to-end ownership.",
 
   hero: {
-    headline: "I build mobile products from messy ideas to shipped experiences.",
+    /** Editorial headline, one line per entry; `marked` gets the hand-drawn circle. */
+    lines: ["I build", "mobile products", "from messy ideas."],
+    marked: "messy ideas",
     supporting:
-      "I'm Syed Uzaif, a Mobile Product Engineer combining Flutter development, product thinking, and visual storytelling. I build, improve, and release production applications while thinking beyond the screen.",
+      "Mobile Product Engineer combining Flutter engineering, product thinking, ownership, and visual storytelling.",
     proof:
       "Production applications · Android and iOS releases · 10,000+ cumulative downloads",
-    ctaPrimary: { label: "Explore selected work", href: "/#work" },
-    ctaSecondary: { label: "Watch my videos", href: "/#creative" },
+    ctaPrimary: { label: "Explore the experiments", href: "/#work" },
+    ctaSecondary: { label: "About the person behind them", href: "/#about" },
   },
 
   /** Shared copy for the work section (homepage #work + the /work index). */
   work: {
-    eyebrow: "Selected product work",
-    heading: "Products where I contributed beyond implementation",
+    eyebrow: "01 / Selected work",
+    heading: "Selected product experiments",
     intro:
-      "From understanding the problem to shipping and improving the final experience.",
+      "Each project is a documented investigation — from the first observation to what shipped, what was rejected, and what it taught me.",
+  },
+
+  /** Contact section copy — speaks to employers and founders equally. */
+  contact: {
+    heading: "Building a mobile product or team?",
+    intro:
+      "I'm open to remote mobile roles, startup teams, and selected product-development opportunities where thoughtful execution and ownership matter.",
   },
 
   availability:
@@ -46,15 +57,15 @@ export const siteConfig = {
   },
 
   /**
-   * Primary navigation. Hrefs are root-relative hashes (`/#work`) so they work
-   * from every page — from the homepage they scroll in place; from a sub-page
-   * they return home and land on the section.
+   * Primary navigation — an editorial index. Hrefs are root-relative hashes
+   * (`/#work`) so they work from every page; `n` is the printed index number.
    */
   nav: [
-    { label: "Work", href: "/#work" },
-    { label: "Creative", href: "/#creative" },
-    { label: "About", href: "/#about" },
-    { label: "Contact", href: "/#contact" },
+    { n: "01", label: "Work", href: "/#work" },
+    { n: "02", label: "Process", href: "/#process" },
+    { n: "03", label: "Creative", href: "/#creative" },
+    { n: "04", label: "About", href: "/#about" },
+    { n: "05", label: "Contact", href: "/#contact" },
   ],
 } as const;
 

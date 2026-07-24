@@ -12,6 +12,9 @@ const nextConfig: NextConfig = {
   images: { unoptimized: true },
   trailingSlash: true,
   reactStrictMode: true,
+  // Allow previewing the dev server from other devices on the LAN (e.g. a phone
+  // testing the mobile layout). Dev-only; ignored by the static export.
+  allowedDevOrigins: ["192.168.1.9"],
 };
 
 export default nextConfig;

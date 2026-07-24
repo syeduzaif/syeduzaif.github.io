@@ -1,63 +1,73 @@
 @import "tailwindcss";
 
 /* ============================================================
-   Design tokens — "cinematic product journal" (Earth & Clay)
-   Tailwind v4 CSS-first config. @theme values also emit as
-   CSS custom properties on :root, so they work in inline styles.
+   Design tokens — "Experimental Editorial Product Lab"
+   Warm paper, ink, and a small set of accents used deliberately.
+   Tailwind v4 CSS-first config. @theme values also emit as CSS
+   custom properties on :root, so they work in inline styles.
    ============================================================ */
 @theme {
-  /* Color */
-  --color-bg: #11100f; /* page background, near-black */
-  --color-surface: #1b1917; /* raised cards / solid nav */
-  --color-cream: #f0e7da; /* primary text */
-  --color-muted: #aaa097; /* secondary text */
-  --color-terracotta: #c8704f; /* key actions & highlights */
-  --color-terracotta-hi: #d98a6b; /* hover / small emphasis (contrast) */
-  --color-olive: #7e8267; /* secondary fills / borders */
-  --color-olive-text: #9aa083; /* small label text (contrast) */
-  --color-sand: #d6b98c; /* metrics, dividers, warm accents */
+  /* Color — base */
+  --color-paper: #f2efe7; /* page background, warm paper */
+  --color-paper-soft: #faf9f5; /* raised cards / panels */
+  --color-ink: #171717; /* primary text */
+  --color-grey: #6b675f; /* secondary text — AA on paper (#77736B fell just short) */
 
-  /* Fonts (font-serif / font-sans utilities) */
+  /* Color — accents. The *-deep variants are the small-text-safe versions;
+     green + yellow are FILL/HIGHLIGHT ONLY (never text on paper). */
+  --color-orange: #d45d32; /* primary accent — large text / marks / borders */
+  --color-orange-deep: #b04a26; /* orange for small text (≈4.7:1 on paper) */
+  --color-blue: #3155ff; /* SimpliEd identity (≈4.7:1 on paper) */
+  --color-blue-deep: #2743d0; /* blue for small text (≈6.5:1 on paper) */
+  --color-green: #b8e62e; /* Budget Buddy identity — fills/highlights only */
+  --color-green-deep: #55700f; /* green for text (≈4.9:1 on paper) */
+  --color-yellow: #f0d95c; /* sticky notes / highlighter — fills only */
+
+  /* Fonts (font-serif / font-sans / font-mono utilities) */
   --font-serif: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
-  --font-sans: var(--font-manrope), system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-geist), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
 
   /* Type scale — fluid, editorial (text-* utilities) */
-  --text-eyebrow: 0.8125rem;
-  --text-hero: clamp(2.75rem, 6vw, 5.25rem);
-  --text-h2: clamp(2rem, 4vw, 3.25rem);
-  --text-h3: clamp(1.5rem, 2.5vw, 2rem);
-  --text-lead: clamp(1.125rem, 1.6vw, 1.375rem);
+  --text-eyebrow: 0.72rem;
+  --text-hero: clamp(2.5rem, 8vw, 6.25rem);
+  --text-h2: clamp(2rem, 4.5vw, 3.4rem);
+  --text-h3: clamp(1.45rem, 2.4vw, 2rem);
+  --text-lead: clamp(1.1rem, 1.5vw, 1.3rem);
   --text-body: 1.0625rem;
 
-  /* Radii (rounded-* utilities) */
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
+  /* Radii (rounded-* utilities) — tighter, more print-like */
+  --radius-sm: 3px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-xl: 22px;
 
   /* Motion */
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Layout widths (plain vars, used by Container) */
+/* Layout widths + the per-project accent slot (overridden inline per
+   experiment: --accent for fills/borders, --accent-ink for small text). */
 :root {
-  --width-container: 1216px;
-  --width-reading: 720px;
-  color-scheme: dark;
+  --width-container: 1240px;
+  --width-reading: 680px;
+  --accent: var(--color-orange);
+  --accent-ink: var(--color-orange-deep);
+  color-scheme: light;
 }
 
 html {
   scroll-behavior: smooth;
   /* offset anchor targets below the sticky header */
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 5.5rem;
 }
 
 body {
-  background: var(--color-bg);
-  color: var(--color-cream);
+  background: var(--color-paper);
+  color: var(--color-ink);
   font-family: var(--font-sans);
   font-size: var(--text-body);
-  line-height: 1.7;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -67,32 +77,77 @@ h2,
 h3 {
   font-family: var(--font-serif);
   font-weight: 400;
-  line-height: 1.05;
+  line-height: 1.02;
   letter-spacing: -0.01em;
 }
 
-/* Visible, warm focus — never removed */
+/* Visible, high-contrast focus — orange reads on both paper and ink */
 :focus-visible {
-  outline: 2px solid var(--color-sand);
+  outline: 2px solid var(--color-orange);
   outline-offset: 3px;
   border-radius: 2px;
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--color-terracotta) 40%, transparent);
-  color: var(--color-cream);
+  background: var(--color-yellow);
+  color: var(--color-ink);
 }
 
-/* Static film-grain overlay — warms the near-black, no animation */
+/* Paper grain — static, multiply keeps it print-like on the light ground */
 .grain::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 60;
   pointer-events: none;
-  opacity: 0.05;
-  mix-blend-mode: overlay;
+  opacity: 0.04;
+  mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Visible working-grid backdrop for lab/technical panels */
+.grid-paper {
+  background-image:
+    linear-gradient(to right, rgb(23 23 23 / 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(23 23 23 / 0.055) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Highlighter mark — pairs with <Mark tone>; ink text stays on top */
+.marker {
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0.02em 0.18em;
+  border-radius: 2px;
+}
+
+/* Observation → question → response reveal. Content is always in the DOM;
+   pointer-fine devices get a folded state that opens on hover/focus-within.
+   Touch devices and no-hover contexts see it expanded — nothing essential
+   is hover-only. Reduced-motion users keep the behaviour minus transition. */
+.inquiry-more {
+  display: grid;
+  grid-template-rows: 1fr;
+}
+.inquiry-more > div {
+  overflow: hidden;
+  min-height: 0;
+}
+@media (hover: hover) and (pointer: fine) {
+  .inquiry-more {
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.45s var(--ease-out-soft);
+  }
+  .inquiry:hover .inquiry-more,
+  .inquiry:focus-within .inquiry-more {
+    grid-template-rows: 1fr;
+  }
+  .inquiry-hint {
+    display: inline-flex;
+  }
+}
+.inquiry-hint {
+  display: none;
 }
 
 /* Skip link — visible only when focused */
@@ -103,11 +158,13 @@ h3 {
   z-index: 100;
   transform: translateY(-150%);
   transition: transform 0.2s ease;
-  background: var(--color-surface);
-  color: var(--color-cream);
+  background: var(--color-paper-soft);
+  color: var(--color-ink);
   padding: 0.625rem 1rem;
   border-radius: var(--radius-md);
-  border: 1px solid var(--color-sand);
+  border: 1px solid var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
 }
 .skip-link:focus {
   transform: translateY(0);

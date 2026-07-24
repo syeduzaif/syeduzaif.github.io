@@ -4,13 +4,12 @@ type Variant = "primary" | "secondary" | "link";
 type Size = "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sand focus-visible:ring-offset-2 focus-visible:ring-offset-bg";
+  "inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-paper";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-terracotta text-bg hover:bg-terracotta-hi",
-  secondary:
-    "border border-cream/20 text-cream hover:border-sand hover:text-sand",
-  link: "text-terracotta-hi underline-offset-4 hover:text-sand hover:underline px-0 py-0",
+  primary: "bg-ink text-paper-soft hover:bg-orange-deep",
+  secondary: "border border-ink/25 text-ink hover:border-ink hover:bg-ink/5",
+  link: "text-orange-deep underline-offset-4 hover:text-ink hover:underline px-0 py-0",
 };
 
 const sizes: Record<Size, string> = {

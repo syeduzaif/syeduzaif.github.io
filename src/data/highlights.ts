@@ -1,22 +1,29 @@
-import type { Metric } from "@/lib/types";
+import type { EvidenceFact } from "@/lib/types";
 
 /**
- * Credibility strip — only defensible facts, drawn from real production work.
- * No skill percentages (per positioning guidance).
+ * Evidence strip — only defensible facts from real production work, presented
+ * as annotated margin notes rather than four identical stat cards. The `note`
+ * carries the honesty boundary (e.g. downloads are a team/product outcome).
  */
-export const credibilityFacts: Metric[] = [
-  { value: "10K+", label: "Cumulative downloads" },
-  { value: "2 platforms", label: "Android and iOS releases" },
-  { value: "~45% faster", label: "Initial load: 3.2s → 1.76s" },
-  { value: "End-to-end", label: "Build, QA & release ownership" },
-];
-
-/** "What I'm working toward" — ambition without inventing job titles. */
-export const currentDirection: string[] = [
-  "Building stronger product case studies",
-  "Deepening offline-first architecture",
-  "Improving testing and delivery systems",
-  "Building independent mobile products",
-  "Sharing product and creative experiments",
-  "Growing toward product ownership and leadership",
+export const credibilityFacts: EvidenceFact[] = [
+  {
+    value: "10,000+",
+    label: "cumulative downloads",
+    note: "team/product outcome — I build & ship the mobile layer",
+  },
+  {
+    value: "3.2s → 1.76s",
+    label: "initial load",
+    note: "profiled first, then restructured",
+  },
+  {
+    value: "Android / iOS",
+    label: "production releases",
+    note: "TestFlight · Play Internal Testing",
+  },
+  {
+    value: "build → test → release",
+    label: "end-to-end contribution",
+    note: "code to store, both platforms",
+  },
 ];

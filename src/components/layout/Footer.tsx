@@ -7,7 +7,7 @@ import {
   YoutubeIcon,
 } from "@/components/ui/BrandIcons";
 
-/** Site footer with social links + credit. Year is stamped at build time. */
+/** Editorial colophon footer. Year is stamped at build time. */
 export function Footer() {
   const year = new Date().getFullYear();
   const { links } = siteConfig;
@@ -16,14 +16,12 @@ export function Footer() {
     { label: "GitHub", href: links.github, Icon: GithubIcon },
     { label: "LinkedIn", href: links.linkedin, Icon: LinkedinIcon },
     { label: "Email", href: links.email, Icon: Mail },
-    ...(links.youtube
-      ? [{ label: "YouTube", href: links.youtube, Icon: YoutubeIcon }]
-      : []),
+    { label: "YouTube", href: links.youtube, Icon: YoutubeIcon },
   ];
 
   return (
-    <footer className="border-t border-cream/10 py-12">
-      <Container className="flex flex-col items-center gap-6 text-center">
+    <footer className="border-t border-ink/15 py-10">
+      <Container className="flex flex-col items-center gap-5 text-center">
         <nav aria-label="Social" className="flex items-center gap-5">
           {socials.map(({ label, href, Icon }) => (
             <a
@@ -32,14 +30,14 @@ export function Footer() {
               aria-label={label}
               target={href.startsWith("http") ? "_blank" : undefined}
               rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-              className="text-muted transition-colors hover:text-sand"
+              className="text-grey transition-colors hover:text-ink"
             >
-              <Icon size={20} />
+              <Icon size={19} />
             </a>
           ))}
         </nav>
-        <p className="text-sm text-muted">
-          © {year} {siteConfig.name} · {siteConfig.title}
+        <p className="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-grey">
+          © {year} {siteConfig.name} / {siteConfig.lab} — {siteConfig.title}
         </p>
       </Container>
     </footer>

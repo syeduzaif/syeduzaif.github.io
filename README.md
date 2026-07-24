@@ -9,7 +9,7 @@ Positioning: _I turn unclear ideas into thoughtful mobile products by combining 
 - **Next.js 16** (App Router) + **React 19** + **TypeScript**
 - **Tailwind CSS v4** (CSS-first `@theme` tokens)
 - **Framer Motion** (restrained, reduced-motion aware)
-- **next/font** — Instrument Serif (headings) + Manrope (body)
+- **next/font** — Instrument Serif (display) + Geist (body/UI) + Geist Mono (labels)
 - **Static export** (`output: "export"`) → hosted on GitHub Pages
 
 ## Getting started

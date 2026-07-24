@@ -1,9 +1,9 @@
-import { Instrument_Serif, Manrope } from "next/font/google";
+import { Instrument_Serif, Geist, Geist_Mono } from "next/font/google";
 
 /**
- * Display / headings — editorial serif.
- * Instrument Serif ships weight 400 only (normal + italic).
- * Alternatives if a different feel is wanted: Fraunces, Cormorant Garamond.
+ * Display / narrative — editorial serif. Instrument Serif ships weight 400
+ * only (normal + italic). The italic doubles as the site's "handwritten"
+ * annotation voice — controlled, not novelty-font childish.
  */
 export const serif = Instrument_Serif({
   weight: "400",
@@ -13,13 +13,16 @@ export const serif = Instrument_Serif({
   display: "swap",
 });
 
-/**
- * Body / UI — clean, highly readable.
- * Alternatives: Inter, Geist, DM Sans.
- */
-export const sans = Manrope({
+/** Body / interface — Geist (product & interface text). */
+export const sans = Geist({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-manrope",
+  variable: "--font-geist",
+  display: "swap",
+});
+
+/** Technical labels, annotations, metadata — Geist Mono. */
+export const mono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
   display: "swap",
 });

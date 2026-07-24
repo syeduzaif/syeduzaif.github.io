@@ -11,7 +11,11 @@ import { cn } from "@/lib/utils";
 
 const sectionId = (href: string) => href.split("#")[1] ?? "";
 
-/** Sticky header: transparent at the top, solid after scroll; scroll-spy on home. */
+/**
+ * Sticky editorial index: "SYED UZAIF / PRODUCT LAB" + numbered entries.
+ * Transparent at top, paper after scroll; scroll-spy highlights the active
+ * entry on the homepage.
+ */
 export function Navbar() {
   const pathname = usePathname();
   const isHome = pathname === "/";
@@ -54,7 +58,7 @@ export function Navbar() {
       className={cn(
         "fixed inset-x-0 top-0 z-40 border-b transition-colors duration-300",
         scrolled
-          ? "border-cream/10 bg-bg/85 backdrop-blur"
+          ? "border-ink/10 bg-paper/85 backdrop-blur"
           : "border-transparent",
       )}
     >
@@ -62,12 +66,13 @@ export function Navbar() {
         className="mx-auto flex h-16 w-full items-center justify-between px-6 md:px-8"
         style={{ maxWidth: "var(--width-container)" }}
       >
-        <Link href="/#top" className="flex flex-col leading-none">
-          <span className="font-serif text-lg text-cream">
-            {siteConfig.name}
-          </span>
-          <span className="text-[0.7rem] uppercase tracking-[0.2em] text-olive-text">
-            {siteConfig.title}
+        <Link
+          href="/#top"
+          className="font-mono text-[0.78rem] font-semibold tracking-[0.14em] text-ink uppercase"
+        >
+          {siteConfig.name}
+          <span className="ml-1.5 font-normal text-grey">
+            / {siteConfig.lab}
           </span>
         </Link>
 
@@ -76,6 +81,7 @@ export function Navbar() {
             <NavLink
               key={item.href}
               href={item.href}
+              n={item.n}
               active={isHome && activeId === sectionId(item.href)}
             >
               {item.label}

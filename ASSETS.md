@@ -7,30 +7,35 @@ Legend: 🔴 biggest gap · 🟡 recommended · ⚪ optional
 
 ---
 
-## 🔴 YouTube (channel + 3 videos)
+## 🔴 Creative — product-building video (reserved slot)
 
-There is **no YouTube URL anywhere yet** — the Creative section's "Watch" buttons
-render as disabled "Coming soon" until provided.
+The Creative section shows two real videos plus **one clearly-reserved slot**
+("Stupid Alarm — building in public", renders as an "In production" future slot).
+To publish it:
 
-1. Add the channel URL to `siteConfig.links.youtube` in `src/data/siteConfig.ts`
-   (this also lights up the footer icon, the Contact "YouTube" link, and the
-   `sameAs` in the JSON-LD + `public/llms.txt`).
-2. In `src/data/creative.ts`, for each of the 3 videos set:
-   - `url` → the YouTube watch URL (enables the Watch button)
-   - `thumb` → `{ kind: "image", src: "/images/creative/<file>.jpg", alt: "…" }`
-     (drop the thumbnails into `public/images/creative/`)
+1. Drop a thumbnail at `public/images/creative/stupid-alarm-dev.jpg`.
+2. In `src/data/creative.ts`, on that entry set `thumb` → `{ kind:"image", src, alt }`,
+   `url` → the YouTube watch URL, and remove `reserved: true`.
 
-The three videos referenced: **Master of None**, **Why I Wait for the Call to End
-Before I Text**, **Stupid Alarm — Development Series**.
+The YouTube channel URL is already wired (`siteConfig.links.youtube`). The two
+live videos ("Why I Wait for the Call to End Before I Text", "I ship apps for
+everyone except myself") use real URLs + thumbnails already.
 
-## 🟡 Project covers
+## 🟡 Project covers & case-study galleries
 
-Real screenshots/covers for the two placeholder projects. Drop files in
-`public/images/projects/`, then in `src/data/caseStudies.ts` change `cover` to
-`{ kind: "image", src, alt }`:
+Covers for the two placeholder projects currently render as polished
+**device-frame previews** with a visible "Visual preview in progress" pill (not
+fake screens). To upgrade, drop a real (sanitised) file and flip `cover` in
+`src/data/caseStudies.ts` to `{ kind:"image", src, alt }`:
 
-- **Budget Buddy** → `budget-buddy-cover.png`
-- **Stupid Alarm** → `stupid-alarm-cover.png`
+- **Budget Buddy** → `public/images/projects/budget-buddy-cover.png`
+  (real app logo already copied to `budget-buddy-logo.png` if useful)
+- **Stupid Alarm** → `public/images/projects/stupid-alarm-cover.png`
+
+Case-study `gallery` visuals (wired via each study's `gaps` notes):
+- **SimpliEd** → sanitised Teacher-app screenshots → `public/images/projects/simplied/`
+- **Budget Buddy** → expense entry / category budgets / monthly view → `public/images/projects/budget-buddy/`
+- **Stupid Alarm** → prototype screens + short muted demo → `public/images/projects/stupid-alarm/`
 
 (SimpliEd already uses a real cover: `public/images/projects/simplied-cover.png`.)
 
@@ -44,7 +49,7 @@ square source (≥512×512) and generate:
 
 ## ⚪ Hero video
 
-Optional cinematic upgrade. Add `public/videos/hero.webm` + `hero.mp4` + a poster,
+Optional upgrade. Add `public/videos/hero.webm` + `hero.mp4` + a poster,
 then pass a `video={{ webm, mp4 }}` prop to `<HeroMedia>` in
 `src/components/sections/Hero.tsx`. Muted, ~8–15s loop. Auto-disabled under
 reduced-motion.
