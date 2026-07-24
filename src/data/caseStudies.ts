@@ -49,6 +49,8 @@ export interface CaseStudy {
     playStore?: string;
     appStore?: string;
     youtube?: string;
+    /** A published first-party write-up (e.g. architecture article). */
+    article?: { url: string; label: string };
   };
   confidential?: boolean;
   /** Short lifecycle label — e.g. "Production" / "In active development" / "Concept". */
@@ -105,6 +107,12 @@ export const caseStudies: Record<CaseStudy["slug"], CaseStudy> = {
         "An encrypted local database as the source of truth, with durable queued synchronisation.",
     },
     confidential: true,
+    links: {
+      article: {
+        url: "https://www.linkedin.com/pulse/how-i-structured-offline-first-flutter-application-syed-uzaif-ojbff/",
+        label: "How I Structured an Offline-First Flutter Application",
+      },
+    },
     status: "Production · live on Android & iOS",
     role: "Flutter Developer (promoted from intern within 3 months)",
     timeframe: "Sep 2024 — Present",
@@ -276,10 +284,34 @@ export const caseStudies: Record<CaseStudy["slug"], CaseStudy> = {
       "Strengthen automated release checks so the store cadence stays safe as the team grows.",
     ],
 
+    // TODO(asset): three screenshots confirmed and captioned — save the files at
+    // these exact paths (public/images/projects/simplied/), then uncomment.
+    // All visible people/data must be demo accounts (Terri Hettinger / Zainab
+    // Siddiqui / James Alex Taylor look like seeded demo data — confirm first).
+    // gallery: [
+    //   {
+    //     kind: "image",
+    //     src: "/images/projects/simplied/student-home.png",
+    //     alt: "SimpliEd Student app home screen with modules for circulars, news, events, attendance, timetable, gradebook and more",
+    //     caption: "Student app — the module home (demo account)",
+    //   },
+    //   {
+    //     kind: "image",
+    //     src: "/images/projects/simplied/teacher-dashboard.png",
+    //     alt: "SimpliEd Teacher app dashboard showing today's classes, quick actions, pending grading tasks and the day's schedule",
+    //     caption: "Teacher app — the teaching day at a glance (demo account)",
+    //   },
+    //   {
+    //     kind: "image",
+    //     src: "/images/projects/simplied/attendance-scan.png",
+    //     alt: "SimpliEd attendance flow scanning a student QR code and marking the student present",
+    //     caption: "Attendance — QR scan marks a student present (demo data)",
+    //   },
+    // ],
     gaps: [
       {
         section: "Visual walkthrough",
-        note: "Sanitised Teacher-app screenshots (attendance, grading, sync state) with student data and internal URLs removed — drop into public/images/projects/simplied/ and wire into `gallery`.",
+        note: "Three sanitised screenshots are captioned and wired in code — save the files as public/images/projects/simplied/{student-home,teacher-dashboard,attendance-scan}.png and flip the commented `gallery` block in caseStudies.ts.",
       },
     ],
   },

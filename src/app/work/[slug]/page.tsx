@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, FileText } from "lucide-react";
 import { caseStudies, featuredSlugs, type CaseStudy } from "@/data/caseStudies";
 import { routeMetadata } from "@/lib/seo";
 import { accentVars } from "@/lib/accents";
@@ -14,6 +14,7 @@ import { DecisionRecord } from "@/components/lab/DecisionRecord";
 import { ApproachCard } from "@/components/lab/ApproachCard";
 import { Annotation } from "@/components/lab/Annotation";
 import { MediaFrame } from "@/components/media/MediaFrame";
+import { MediaFragment } from "@/components/lab/MediaFragment";
 import { ResponsibilityMatrix } from "@/components/ui/ResponsibilityMatrix";
 import { ArchitectureDiagram } from "@/components/ui/ArchitectureDiagram";
 import { ProjectMetric } from "@/components/ui/ProjectMetric";
@@ -257,16 +258,44 @@ export default async function WorkCaseStudyPage({ params }: Params) {
               />
             </div>
           )}
+          {cs.links?.article && (
+            <p className="mt-5 border-l-2 pl-4" style={{ borderColor: "var(--accent)" }}>
+              <span className="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-grey">
+                Published write-up ·{" "}
+              </span>
+              <a
+                href={cs.links.article.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium text-(--accent-ink) underline decoration-1 underline-offset-4 transition-colors hover:text-ink"
+              >
+                {cs.links.article.label} ↗
+              </a>
+            </p>
+          )}
           {cs.gallery && cs.gallery.length > 0 && (
-            <div className="mt-6 grid gap-4 sm:grid-cols-2">
-              {cs.gallery.map((m, i) => (
-                <MediaFrame
-                  key={i}
-                  media={m}
-                  className="aspect-[3/4]"
-                  sizes="(max-width:640px) 100vw, 50vw"
-                />
-              ))}
+            <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {cs.gallery.map((m, i) =>
+                m.kind === "image" ? (
+                  <MediaFragment
+                    key={m.src}
+                    src={m.src}
+                    alt={m.alt}
+                    caption={m.caption}
+                    rotate={i % 2 === 0 ? -0.8 : 0.8}
+                    taped
+                    aspect="aspect-[9/19]"
+                    sizes="(max-width:640px) 90vw, (max-width:1024px) 45vw, 30vw"
+                  />
+                ) : (
+                  <MediaFrame
+                    key={i}
+                    media={m}
+                    className="aspect-[3/4]"
+                    sizes="(max-width:640px) 100vw, 50vw"
+                  />
+                ),
+              )}
             </div>
           )}
           {visualGaps?.map((g) => (
@@ -496,6 +525,16 @@ export default async function WorkCaseStudyPage({ params }: Params) {
 
             {/* Resources */}
             <div className="flex flex-wrap gap-3">
+              {cs.links?.article && (
+                <a
+                  href={cs.links.article.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 border border-ink/25 px-4 py-2 text-sm text-ink transition-colors hover:border-ink hover:bg-ink/5"
+                >
+                  <FileText size={16} /> Read the architecture write-up
+                </a>
+              )}
               {cs.links?.github && (
                 <a
                   href={cs.links.github}

@@ -7,7 +7,7 @@
  * with an optional short `feature` label describing what the real asset will show.
  */
 export type Media =
-  | { kind: "image"; src: string; alt: string }
+  | { kind: "image"; src: string; alt: string; caption?: string }
   | { kind: "placeholder"; label: string; tone?: MediaTone; feature?: string };
 
 /** Accent identity for placeholder media — maps to the lab accent palette. */
