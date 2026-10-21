@@ -14,6 +14,8 @@ import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Reveal } from "@/components/ui/Reveal";
+import { SpecTable } from "@/components/ui/SpecTable";
+import { inquiryRows } from "@/lib/caseStudyRows";
 import { MediaFrame } from "@/components/media/MediaFrame";
 import { AppTrio } from "@/components/lab/AppTrio";
 
@@ -47,27 +49,7 @@ function ExperimentBar({ cs }: { cs: CaseStudy }) {
  * both what the design calls for and one less hover-only affordance.
  */
 function InquiryTable({ cs }: { cs: CaseStudy }) {
-  const rows = [
-    ["Observation", cs.inquiry.observation],
-    ["Question", cs.inquiry.question],
-    ["Response", cs.inquiry.response],
-  ] as const;
-
-  return (
-    <dl className="mt-7 border-t border-rule">
-      {rows.map(([label, value]) => (
-        <div
-          key={label}
-          className="grid grid-cols-[6.5rem_1fr] gap-4 border-b border-rule py-3.5"
-        >
-          <dt className="pt-0.5 font-mono text-[0.6rem] font-medium tracking-[0.14em] text-grey uppercase">
-            {label}
-          </dt>
-          <dd className="text-[0.95rem] leading-snug text-ink">{value}</dd>
-        </div>
-      ))}
-    </dl>
-  );
+  return <SpecTable className="mt-7" rows={inquiryRows(cs.inquiry)} />;
 }
 
 function EntryText({ cs }: { cs: CaseStudy }) {

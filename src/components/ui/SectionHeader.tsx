@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { Eyebrow } from "./Eyebrow";
 
 interface SectionHeaderProps {
   /** Mono index/eyebrow, e.g. "02 / PROCESS". */
@@ -7,6 +8,8 @@ interface SectionHeaderProps {
   intro?: string;
   /** id applied to the heading — pair with Section's labelledBy. */
   id?: string;
+  /** Page mastheads pass "h1"; section breaks keep the default "h2". */
+  as?: "h1" | "h2";
   align?: "left" | "center";
   /** Render on a dark band — swaps the ink/grey pair for the night pair. */
   onNight?: boolean;
@@ -23,15 +26,13 @@ export function SectionHeader({
   title,
   intro,
   id,
+  as: Heading = "h2",
   align = "left",
   onNight = false,
   className,
 }: SectionHeaderProps) {
   const heading = onNight ? "text-on-night" : "text-ink";
   const body = onNight ? "text-on-night-2" : "text-grey";
-  // Signal fails AA on paper at small sizes; -deep carries it. On night the
-  // base signal is 5.6:1 and reads better.
-  const label = onNight ? "text-orange" : "text-orange-deep";
 
   return (
     <div
@@ -41,14 +42,7 @@ export function SectionHeader({
       )}
     >
       {eyebrow && (
-        <p
-          className={cn(
-            "font-mono text-eyebrow font-medium tracking-[0.16em] uppercase",
-            label,
-          )}
-        >
-          {eyebrow}
-        </p>
+        <Eyebrow tone={onNight ? "signal-on-night" : "signal"}>{eyebrow}</Eyebrow>
       )}
       <div
         className={cn(
@@ -56,12 +50,12 @@ export function SectionHeader({
           align === "left" && intro && "md:grid md:grid-cols-[1.25fr_1fr] md:items-end",
         )}
       >
-        <h2
+        <Heading
           id={id}
           className={cn("text-h2 [font-stretch:90%] text-balance", heading)}
         >
           {title}
-        </h2>
+        </Heading>
         {intro && (
           <p className={cn("mt-5 max-w-[46ch] text-lead md:mt-0", body)}>
             {intro}
