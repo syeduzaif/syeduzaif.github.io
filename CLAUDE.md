@@ -4,8 +4,6 @@ Personal portfolio, **rebuilt in Next.js** and statically exported to **GitHub P
 
 The homepage was redesigned in pen.dev (October 2026) and ported by hand; the source design lives in `designs/homepage-redesign-v1.pen` with the content inventory in `designs/content.md`. Two earlier looks were deliberately replaced: a dark "cinematic product journal", then the warm-paper "Experimental Editorial Product Lab" with hand-drawn marks.
 
-> **Partially migrated.** The homepage is fully ported. About (`/about`) and the Work pages inherit the new tokens and fonts but still carry the old editorial layouts and several retired `lab/` primitives — they need their own pass.
-
 > The previous **Flutter Web** app is archived under `legacy-flutter/` (full git history preserved). Do not edit it — it is retired.
 
 ## Stack
@@ -33,18 +31,21 @@ npx serve out      # preview the exact Pages output
   - **Contrast is load-bearing.** On `paper`, base `orange` (2.97) and `green` (2.98) **fail AA** — they are large-text, fills, rules and UI only; `orange-deep` (4.8) and `green-deep` (4.8) carry small text. `yellow` is lime: a fill on **night** only (16.2 there, 1.02 on paper). On an orange ground use **ink**, never paper (5.6 vs 3.0).
   - Per-project accents (`--accent`/`--accent-ink`, via `lib/accents.ts`): SimpliEd = blue, Budget Buddy = green, Stupid Alarm = orange.
 - **`cn()` registers the `@theme` type scale with tailwind-merge** (`src/lib/utils.ts`). Without it, `text-hero`/`text-h2`/… are treated as text *colours* and get dropped when merged with `text-ink`. Add any new `--text-*` token to that list.
-- **Lab primitives** live in `src/components/lab/`. The Signal Spec ones are ProcessFlow, ResponsibilityMap, StoryObservation, DraggableNote, AppTrio. **Retired with the editorial look** (still imported by About/Work until those are ported): EditorialLabel, HandDrawnArrow, CircledText, Tape, ProductNote, Mark, ExperimentNumber, Glyph/ExperimentLegend, Annotation, InquiryBlock. Don't reach for those in new work.
+- **Two building blocks carry most of the layout** (`src/components/ui/`):
+  - `<Eyebrow>` — the mono/uppercase/tracked label that opens every block. Pick the `tone` for the ground (`signal` on paper, `signal-on-night` on a dark band, `accent` for a per-project accent, `grey` for sub-labels).
+  - `<SpecTable>` — the hairline-ruled label/value `<dl>` behind inquiry beats, case-study facts, decision records, the timeline and the principles list. Everything is visible; there is no hover-to-reveal.
+- **Lab primitives** live in `src/components/lab/`: ProcessFlow, ResponsibilityMap, StoryObservation, DraggableNote, AppTrio, MediaFragment, ApproachCard, DecisionRecord. The editorial-era set (EditorialLabel, HandDrawnArrow, CircledText, Tape, ProductNote, Mark, ExperimentNumber, Glyph/ExperimentLegend, Annotation, InquiryBlock) is **deleted** — the glyph language ● ? ■ ✕ → ★ is gone, replaced by mono labels and square accent markers. Don't reintroduce them.
 - **Server Components by default.** Only interactive leaves are `"use client"` (Navbar, MobileMenu, Reveal, ProcessFlow, DraggableNote).
 - **Media fallbacks**: the `Media` union (`src/lib/types.ts`) is either `{kind:"image"}` or `{kind:"placeholder"}`. Missing assets render as warm textured covers via `MediaFrame`. To add a real asset, flip one data entry — no component changes. Checklist in `ASSETS.md`.
 - **SEO/GEO** (`src/lib/seo.ts` + app routes): Metadata API, per-route canonicals, `sitemap.ts`, `robots.ts` (AI crawlers allowed), static `opengraph-image.png`, `public/llms.txt`, `ProfilePage`/`Person`/`WebSite` JSON-LD. Keep the `Syed Uzaif` + `Mobile Product Engineer` entity strings consistent across title/h1/meta/JSON-LD/llms.txt. Exactly one `<h1>` per page.
 
 ## Scope note
 
-This build delivers the **foundation + homepage** (+ About and case-study route stubs). Full case-study bodies (MDX), a Creative page, and Notes are planned later passes — the `CaseStudy` model in `src/data/caseStudies.ts` already reserves fields for them.
+Homepage, About, the `/work` index and the `/work/[slug]` case studies are all on the Signal Spec direction. A standalone Creative page and Notes are planned later passes. Case-study bodies render from `src/data/caseStudies.ts` — every long-form field is optional and the template renders only what exists, with `gaps` surfacing as visible "content needed" markers rather than hiding a missing section.
 
 ## Do / Don't
 
-- ✅ Reuse the `ui/` primitives (Container, Section, SectionHeader, Button, Reveal, Stat, Timeline).
+- ✅ Reuse the `ui/` primitives (Container, Section, SectionHeader, Eyebrow, SpecTable, Button, Reveal, Timeline).
 - ✅ Honour `prefers-reduced-motion` in any new motion.
 - ✅ Keep links real `<a>`/`<Link>` and add trailing slashes to internal routes (`/work/x/`).
 - ✅ Check contrast before putting a colour on a ground — see the token notes above.
