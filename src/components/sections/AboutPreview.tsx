@@ -20,6 +20,10 @@ export function AboutPreview() {
             caption="Karachi → remote · Flutter by trade, storytelling by habit"
             rotate={-1.5}
             taped
+            // Same file the hero already loads, so lazy saves no bytes here —
+            // it only leaves this below-the-fold copy as the last `loading`
+            // value Next records for the URL, which trips its LCP hint.
+            eager
             sizes="(max-width:768px) 80vw, 400px"
             className="mx-auto max-w-[400px] md:mx-0"
           />

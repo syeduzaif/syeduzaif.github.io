@@ -16,6 +16,7 @@ export function MediaFragment({
   taped,
   sizes,
   priority,
+  eager,
   aspect = "aspect-[4/5]",
   className,
 }: {
@@ -29,6 +30,14 @@ export function MediaFragment({
   taped?: boolean;
   sizes?: string;
   priority?: boolean;
+  /**
+   * Above-the-fold loading without a `<link rel="preload">`. `priority` emits
+   * one in the HTML *and* calls `ReactDOM.preload()` on hydration; the image is
+   * already in the server markup, so the second registration buys nothing and
+   * Chrome reports the unused one. Eager + `fetchPriority="high"` gets the same
+   * early, high-priority fetch from the parser alone.
+   */
+  eager?: boolean;
   aspect?: string;
   className?: string;
 }) {
@@ -53,6 +62,8 @@ export function MediaFragment({
           fill
           sizes={sizes ?? "100vw"}
           priority={priority}
+          loading={eager ? "eager" : undefined}
+          fetchPriority={eager ? "high" : undefined}
           className="object-cover"
         />
       </div>

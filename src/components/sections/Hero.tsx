@@ -133,7 +133,7 @@ export function Hero() {
             label="The engineer"
             rotate={-2}
             taped
-            priority
+            eager
             sizes="300px"
             className="absolute top-2 left-0 w-[52%]"
           />
@@ -175,7 +175,7 @@ export function Hero() {
               label="The engineer"
               rotate={-1.5}
               taped
-              priority
+              eager
               sizes="(max-width:768px) 80vw, 420px"
             />
             <div className="-mt-10 ml-auto w-[62%] max-w-[240px]">

@@ -37,7 +37,7 @@ export default function AboutPage() {
             caption="Karachi → remote · Flutter by trade, storytelling by habit"
             rotate={-1.5}
             taped
-            priority
+            eager
             sizes="(max-width:768px) 80vw, 380px"
             className="mx-auto w-full max-w-[380px] md:mx-0"
           />
