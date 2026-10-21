@@ -1,18 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, FileText } from "lucide-react";
-import { caseStudies, featuredSlugs, type CaseStudy } from "@/data/caseStudies";
+import { ArrowLeft, ArrowUpRight, FileText } from "lucide-react";
+import {
+  caseStudies,
+  confidentialityNote,
+  featuredSlugs,
+  type CaseStudy,
+} from "@/data/caseStudies";
 import { routeMetadata } from "@/lib/seo";
 import { accentVars } from "@/lib/accents";
+import { factRows } from "@/lib/caseStudyRows";
 import { Container } from "@/components/ui/Container";
+import { Eyebrow } from "@/components/ui/Eyebrow";
+import { SpecTable } from "@/components/ui/SpecTable";
 import { GithubIcon, YoutubeIcon } from "@/components/ui/BrandIcons";
-import { EditorialLabel } from "@/components/lab/EditorialLabel";
-import { ExperimentLegend } from "@/components/lab/ExperimentLegend";
-import { Glyph, type GlyphKind } from "@/components/lab/Glyph";
 import { DecisionRecord } from "@/components/lab/DecisionRecord";
 import { ApproachCard } from "@/components/lab/ApproachCard";
-import { Annotation } from "@/components/lab/Annotation";
 import { MediaFrame } from "@/components/media/MediaFrame";
 import { MediaFragment } from "@/components/lab/MediaFragment";
 import { AppTrio } from "@/components/lab/AppTrio";
@@ -44,36 +48,39 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   });
 }
 
-/** A chapter: numbered mono header + optional glyph, then content. */
+/** Square bordered action — the site's one button shape. */
+const actionClass =
+  "inline-flex items-center gap-2 border border-ink px-4 py-2.5 font-mono text-[0.62rem] tracking-[0.14em] text-ink uppercase transition-colors hover:bg-ink hover:text-paper";
+
+/** A chapter: thick rule, mono index + title, then the content. */
 function Chapter({
   id,
   n,
   title,
-  glyph,
   wide,
   children,
 }: {
   id: string;
   n: string;
   title: string;
-  glyph?: GlyphKind;
   wide?: boolean;
   children: React.ReactNode;
 }) {
   return (
     <section id={id} aria-labelledby={`${id}-h`} className="scroll-mt-28">
-      <header className="flex items-center gap-3 border-b border-ink/15 pb-3">
-        <span className="font-mono text-[0.72rem] text-(--accent-ink)">{n}</span>
-        {glyph && <Glyph kind={glyph} className="text-(--accent-ink)" />}
+      <header className="flex items-baseline gap-4 border-t-2 border-ink pt-3">
+        <span className="font-mono text-[0.62rem] font-semibold tracking-[0.16em] text-(--accent-ink)">
+          {n}
+        </span>
         <h2
           id={`${id}-h`}
-          className="font-mono text-[0.78rem] font-medium uppercase tracking-[0.2em] text-ink"
+          className="font-mono text-[0.68rem] font-semibold tracking-[0.18em] text-ink uppercase"
         >
           {title}
         </h2>
       </header>
       <div
-        className="mt-6 text-grey"
+        className="mt-7 text-grey"
         style={wide ? undefined : { maxWidth: "var(--width-reading)" }}
       >
         {children}
@@ -82,21 +89,16 @@ function Chapter({
   );
 }
 
-function List({ items, glyph }: { items: string[]; glyph?: GlyphKind }) {
+/** Square accent markers, replacing the retired glyph set. */
+function List({ items }: { items: string[] }) {
   return (
     <ul className="space-y-2.5">
       {items.map((item) => (
         <li key={item} className="flex gap-3">
-          {glyph ? (
-            <span aria-hidden className="mt-1 text-(--accent-ink)">
-              <Glyph kind={glyph} size={12} />
-            </span>
-          ) : (
-            <span
-              aria-hidden
-              className="mt-[11px] h-1 w-1 shrink-0 bg-ink/60"
-            />
-          )}
+          <span
+            aria-hidden
+            className="mt-[0.6em] size-1.5 shrink-0 bg-(--accent)"
+          />
           {item}
         </li>
       ))}
@@ -104,10 +106,25 @@ function List({ items, glyph }: { items: string[]; glyph?: GlyphKind }) {
   );
 }
 
+/** A labelled sub-block inside a chapter. */
+function SubBlock({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <Eyebrow tone="grey">{label}</Eyebrow>
+      <div className="mt-3">{children}</div>
+    </div>
+  );
+}
+
 interface ChapterDef {
   id: string;
   title: string;
-  glyph?: GlyphKind;
   wide?: boolean;
   body: React.ReactNode;
 }
@@ -133,30 +150,26 @@ export default async function WorkCaseStudyPage({ params }: Params) {
     !!cs.overview && {
       id: "observation",
       title: "Observation",
-      glyph: "observation",
       body: (
         <>
-          <p className="font-display text-[1.35rem] leading-snug text-ink">
+          <p className="font-display text-[1.3rem] leading-snug font-medium [font-stretch:94%] text-ink text-balance">
             {cs.inquiry.observation}
           </p>
-          <p className="mt-4">{cs.overview}</p>
+          <p className="mt-5">{cs.overview}</p>
         </>
       ),
     },
     !!(cs.problem || cs.context) && {
       id: "problem",
       title: "Problem",
-      glyph: "unresolved",
       body: (
         <>
           {cs.problem && <p>{cs.problem}</p>}
           {cs.context && (
-            <p className="mt-4 border-l-2 border-ink/20 pl-4 text-sm">
-              <span className="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-grey">
-                Context ·{" "}
-              </span>
-              {cs.context}
-            </p>
+            <div className="mt-5 border-l-2 border-rule pl-4">
+              <Eyebrow tone="grey">Context</Eyebrow>
+              <p className="mt-1.5 text-sm">{cs.context}</p>
+            </div>
           )}
         </>
       ),
@@ -170,7 +183,7 @@ export default async function WorkCaseStudyPage({ params }: Params) {
           {cs.team && (
             <p style={{ maxWidth: "var(--width-reading)" }}>{cs.team}</p>
           )}
-          <div className="mt-6">
+          <div className="mt-7">
             <ResponsibilityMatrix data={cs.responsibility} />
           </div>
         </>
@@ -184,35 +197,37 @@ export default async function WorkCaseStudyPage({ params }: Params) {
     !!cs.questions && {
       id: "questions",
       title: "Questions",
-      glyph: "unresolved",
       body: (
-        <ul className="space-y-3">
-          {cs.questions.map((q) => (
-            <li key={q} className="flex gap-3">
-              <span aria-hidden className="mt-1 text-(--accent-ink)">
-                <Glyph kind="unresolved" size={12} />
+        <ol className="border-t border-rule">
+          {cs.questions.map((q, i) => (
+            <li
+              key={q}
+              className="grid gap-4 border-b border-rule py-4"
+              style={{ gridTemplateColumns: "2.5rem 1fr" }}
+            >
+              <span
+                aria-hidden
+                className="pt-1 font-mono text-[0.6rem] font-medium tracking-[0.14em] text-(--accent-ink)"
+              >
+                {String(i + 1).padStart(2, "0")}
               </span>
-              <span className="font-display text-[1.1rem] italic leading-snug text-ink/85">
+              <span className="font-display text-[1.1rem] leading-snug font-medium [font-stretch:94%] text-ink">
                 {q}
               </span>
             </li>
           ))}
-        </ul>
+        </ol>
       ),
     },
     !!(cs.options || cs.decisions) && {
       id: "decisions",
       title: "Decisions",
-      glyph: "decision",
       wide: true,
       body: (
-        <>
+        <div className="space-y-9">
           {cs.options && (
-            <>
-              <EditorialLabel className="text-grey">
-                Approaches weighed
-              </EditorialLabel>
-              <div className="mt-3 grid gap-3 md:grid-cols-3">
+            <SubBlock label="Approaches weighed">
+              <div className="grid gap-3 md:grid-cols-3">
                 {cs.options.map((o) => (
                   <ApproachCard key={o.approach} option={o} />
                 ))}
@@ -222,26 +237,27 @@ export default async function WorkCaseStudyPage({ params }: Params) {
                   <ContentPlaceholder gap={g} />
                 </div>
               ))}
-            </>
+            </SubBlock>
           )}
           {cs.decisions && (
-            <div className="mt-8 grid gap-4 md:grid-cols-2">
-              {cs.decisions.map((d, i) => (
-                <DecisionRecord
-                  key={d.decision}
-                  n={String(i + 1).padStart(2, "0")}
-                  decision={d}
-                />
-              ))}
-            </div>
+            <SubBlock label="Decisions and trade-offs">
+              <div className="grid gap-4 md:grid-cols-2">
+                {cs.decisions.map((d, i) => (
+                  <DecisionRecord
+                    key={d.decision}
+                    n={String(i + 1).padStart(2, "0")}
+                    decision={d}
+                  />
+                ))}
+              </div>
+            </SubBlock>
           )}
-        </>
+        </div>
       ),
     },
     !!(cs.technical || cs.architecture || cs.gallery || visualGaps?.length) && {
       id: "system",
       title: "System",
-      glyph: "progression",
       wide: true,
       body: (
         <>
@@ -251,7 +267,7 @@ export default async function WorkCaseStudyPage({ params }: Params) {
             </div>
           )}
           {cs.architecture && (
-            <div className="mt-7">
+            <div className="mt-8">
               <ArchitectureDiagram
                 title={cs.architecture.title}
                 steps={cs.architecture.steps}
@@ -260,22 +276,23 @@ export default async function WorkCaseStudyPage({ params }: Params) {
             </div>
           )}
           {cs.links?.article && (
-            <p className="mt-5 border-l-2 pl-4" style={{ borderColor: "var(--accent)" }}>
-              <span className="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-grey">
-                Published write-up ·{" "}
-              </span>
+            <div
+              className="mt-6 border-l-2 pl-4"
+              style={{ borderColor: "var(--accent)" }}
+            >
+              <Eyebrow tone="grey">Published write-up</Eyebrow>
               <a
                 href={cs.links.article.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium text-(--accent-ink) underline decoration-1 underline-offset-4 transition-colors hover:text-ink"
+                className="mt-1.5 inline-flex items-center gap-1.5 text-sm font-medium text-(--accent-ink) underline decoration-1 underline-offset-4 transition-colors hover:text-ink"
               >
-                {cs.links.article.label} ↗
+                {cs.links.article.label} <ArrowUpRight size={13} />
               </a>
-            </p>
+            </div>
           )}
           {cs.gallery && cs.gallery.length > 0 && (
-            <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {cs.gallery.map((m, i) =>
                 m.kind === "image" ? (
                   <MediaFragment
@@ -283,8 +300,6 @@ export default async function WorkCaseStudyPage({ params }: Params) {
                     src={m.src}
                     alt={m.alt}
                     caption={m.caption}
-                    rotate={i % 2 === 0 ? -0.8 : 0.8}
-                    taped
                     aspect="aspect-[9/19]"
                     sizes="(max-width:640px) 90vw, (max-width:1024px) 45vw, 30vw"
                   />
@@ -305,12 +320,8 @@ export default async function WorkCaseStudyPage({ params }: Params) {
             </div>
           ))}
           {cs.confidential && (
-            <p className="mt-5">
-              <Annotation className="text-[0.95rem]">
-                production work under confidentiality — screenshots and details
-                are sanitised (student data, internal URLs, private metrics
-                removed) before publishing.
-              </Annotation>
+            <p className="mt-7 border-t border-rule pt-4 font-mono text-[0.62rem] leading-relaxed tracking-[0.1em] text-grey uppercase">
+              {confidentialityNote}
             </p>
           )}
         </>
@@ -319,17 +330,16 @@ export default async function WorkCaseStudyPage({ params }: Params) {
     !!(cs.metrics || cs.results) && {
       id: "results",
       title: "Results",
-      glyph: "result",
       wide: true,
       body: (
         <>
           {cs.metrics && <ProjectMetric metrics={cs.metrics} />}
           {cs.results && (
             <div
-              className={cs.metrics ? "mt-6" : undefined}
+              className={cs.metrics ? "mt-8" : undefined}
               style={{ maxWidth: "var(--width-reading)" }}
             >
-              <List items={cs.results} glyph="result" />
+              <List items={cs.results} />
             </div>
           )}
         </>
@@ -346,30 +356,19 @@ export default async function WorkCaseStudyPage({ params }: Params) {
       body: (
         <div className="space-y-7">
           {cs.learnings && (
-            <div>
-              <EditorialLabel className="text-grey">What I learned</EditorialLabel>
-              <div className="mt-3">
-                <List items={cs.learnings} />
-              </div>
-            </div>
+            <SubBlock label="What I learned">
+              <List items={cs.learnings} />
+            </SubBlock>
           )}
           {cs.improvements && (
-            <div>
-              <EditorialLabel className="text-grey">
-                What I would improve
-              </EditorialLabel>
-              <div className="mt-3">
-                <List items={cs.improvements} />
-              </div>
-            </div>
+            <SubBlock label="What I would improve">
+              <List items={cs.improvements} />
+            </SubBlock>
           )}
           {cs.nextSteps && (
-            <div>
-              <EditorialLabel className="text-grey">Next steps</EditorialLabel>
-              <div className="mt-3">
-                <List items={cs.nextSteps} glyph="progression" />
-              </div>
-            </div>
+            <SubBlock label="Next steps">
+              <List items={cs.nextSteps} />
+            </SubBlock>
           )}
           {trailingGaps && trailingGaps.length > 0 && (
             <div className="space-y-3">
@@ -388,112 +387,85 @@ export default async function WorkCaseStudyPage({ params }: Params) {
     .map((c, i) => ({ ...c, n: String(i + 1).padStart(2, "0") }));
 
   return (
-    <article
-      className="pt-28 pb-24 md:pt-36"
-      style={accentVars[cs.accent]}
-    >
+    <article className="pt-28 pb-24 md:pt-36" style={accentVars[cs.accent]}>
       <Container>
         <Link
-          href="/#work"
-          className="inline-flex items-center gap-1.5 font-mono text-[0.72rem] uppercase tracking-[0.14em] text-grey transition-colors hover:text-ink"
+          href="/work/"
+          className="inline-flex items-center gap-1.5 font-mono text-[0.68rem] tracking-[0.14em] text-grey uppercase transition-colors hover:text-ink"
         >
           <ArrowLeft size={14} /> Index / all experiments
         </Link>
 
-        {/* Header */}
-        <div className="mt-8 grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-14">
-          <div>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-              <EditorialLabel className="text-(--accent-ink)">
-                Experiment {cs.experiment.n} / {cs.experiment.kind}
-              </EditorialLabel>
-              {cs.status && (
-                <span className="border border-ink/20 bg-paper-soft px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-[0.12em] text-grey">
-                  {cs.status}
-                </span>
-              )}
-            </div>
-            <h1 className="mt-4 text-h2 text-ink text-balance">{cs.title}</h1>
-            <p className="mt-5 text-lead text-grey">{cs.summary}</p>
+        {/* ------------------------------------------------ running head */}
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t-2 border-ink pt-3">
+          <p className="flex items-center gap-3 font-mono text-[0.62rem] font-semibold tracking-[0.16em] text-ink uppercase">
+            Experiment {cs.experiment.n}
+            <span aria-hidden className="h-px w-7 bg-ink/40" />
+            <span className="font-medium text-grey">{cs.experiment.kind}</span>
+          </p>
+          {cs.status && (
+            <p className="flex items-center gap-2 font-mono text-[0.62rem] tracking-[0.14em] text-grey uppercase">
+              <span
+                aria-hidden
+                className="size-1.5 rounded-full bg-(--accent)"
+              />
+              {cs.status}
+            </p>
+          )}
+        </div>
 
-            <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-ink/15 pt-6 text-sm">
-              {cs.role && (
-                <div>
-                  <dt className="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-grey">
-                    Role
-                  </dt>
-                  <dd className="mt-1 text-ink/90">{cs.role}</dd>
-                </div>
-              )}
-              {cs.timeframe && (
-                <div>
-                  <dt className="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-grey">
-                    Timeline
-                  </dt>
-                  <dd className="mt-1 text-ink/90">{cs.timeframe}</dd>
-                </div>
-              )}
-              {cs.platforms && (
-                <div>
-                  <dt className="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-grey">
-                    Platforms
-                  </dt>
-                  <dd className="mt-1 text-ink/90">
-                    {cs.platforms.join(" · ")}
-                  </dd>
-                </div>
-              )}
-              <div>
-                <dt className="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-grey">
-                  Key result
-                </dt>
-                <dd className="mt-1 text-ink/90">
-                  {cs.keyMetric.value} — {cs.keyMetric.label}
-                </dd>
-              </div>
-            </dl>
+        {/* ----------------------------------------------------- masthead */}
+        <div className="mt-10 grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
+          <div>
+            <p
+              aria-hidden
+              className="font-display text-[4.5rem] leading-[0.8] font-bold [font-stretch:88%] text-(--accent)"
+            >
+              {cs.experiment.n}
+            </p>
+            <h1 className="mt-5 text-h2 [font-stretch:90%] text-ink text-balance">
+              {cs.title}
+            </h1>
+            <p className="mt-6 max-w-[54ch] text-lead text-grey">{cs.summary}</p>
+            <SpecTable className="mt-9" labelWidth="7rem" rows={factRows(cs)} />
           </div>
 
-          {cs.posterApps ? (
-            <div className="grid-paper relative border border-ink/15 bg-paper-soft p-4 shadow-[4px_5px_0_rgb(23_23_23/0.08)] md:p-5">
-              <EditorialLabel className="text-(--accent-ink)">
-                One platform / three surfaces
-              </EditorialLabel>
-              <AppTrio
-                apps={cs.posterApps}
-                priority
-                className="mt-4"
-                note="Demo accounts shown — production data stays private."
-              />
-            </div>
-          ) : (
-            <div className="relative border border-ink/15 bg-paper-soft p-2 shadow-[4px_5px_0_rgb(23_23_23/0.08)]">
+          <div className="bg-paper-soft p-5 md:p-6">
+            {cs.posterApps ? (
+              <>
+                <Eyebrow tone="accent">One platform / three surfaces</Eyebrow>
+                <AppTrio
+                  apps={cs.posterApps}
+                  priority
+                  className="mt-5"
+                  note="Demo accounts shown — production data stays private."
+                />
+              </>
+            ) : (
               <MediaFrame
                 media={cs.cover}
                 className="aspect-[4/3]"
                 sizes="(max-width:768px) 100vw, 45vw"
                 priority
               />
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
-        <ExperimentLegend className="mt-12" />
-
-        {/* Body: sticky chapter index + chapters */}
-        <div className="mt-12 gap-12 lg:grid lg:grid-cols-[190px_1fr] xl:gap-16">
+        {/* ------------------------------------ chapter index + chapters */}
+        <div className="mt-20 gap-12 md:mt-24 lg:grid lg:grid-cols-[190px_1fr] xl:gap-16">
           <aside className="hidden lg:block">
             <nav
               aria-label="Chapters"
-              className="sticky top-24 border-l border-ink/15 pl-4"
+              className="sticky top-24 border-t-2 border-ink pt-4"
             >
-              <EditorialLabel className="text-grey">Index</EditorialLabel>
-              <ol className="mt-3 space-y-2">
+              <Eyebrow tone="grey">Index</Eyebrow>
+              <ol className="mt-3.5 space-y-2">
                 {chapters.map((c) => (
                   <li key={c.id}>
                     <a
                       href={`#${c.id}`}
-                      className="group flex items-baseline gap-2 font-mono text-[0.7rem] uppercase tracking-[0.12em] text-grey transition-colors hover:text-ink"
+                      className="flex items-baseline gap-2.5 font-mono text-[0.66rem] tracking-[0.12em] text-grey uppercase transition-colors hover:text-ink"
                     >
                       <span className="text-(--accent-ink)">{c.n}</span>
                       <span>{c.title}</span>
@@ -508,17 +480,18 @@ export default async function WorkCaseStudyPage({ params }: Params) {
             {/* compact index for small screens */}
             <nav
               aria-label="Chapters"
-              className="border border-ink/15 bg-paper-soft p-4 lg:hidden"
+              className="border border-rule bg-paper-soft p-4 lg:hidden"
             >
-              <EditorialLabel className="text-grey">Index</EditorialLabel>
-              <ol className="mt-2 flex flex-wrap gap-x-4 gap-y-1.5">
+              <Eyebrow tone="grey">Index</Eyebrow>
+              <ol className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1.5">
                 {chapters.map((c) => (
                   <li key={c.id}>
                     <a
                       href={`#${c.id}`}
-                      className="font-mono text-[0.68rem] uppercase tracking-[0.1em] text-grey hover:text-ink"
+                      className="font-mono text-[0.66rem] tracking-[0.1em] text-grey uppercase hover:text-ink"
                     >
-                      <span className="text-(--accent-ink)">{c.n}</span> {c.title}
+                      <span className="text-(--accent-ink)">{c.n}</span>{" "}
+                      {c.title}
                     </a>
                   </li>
                 ))}
@@ -531,7 +504,6 @@ export default async function WorkCaseStudyPage({ params }: Params) {
                 id={c.id}
                 n={c.n}
                 title={c.title}
-                glyph={c.glyph}
                 wide={c.wide}
               >
                 {c.body}
@@ -539,15 +511,15 @@ export default async function WorkCaseStudyPage({ params }: Params) {
             ))}
 
             {/* Resources */}
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3 border-t border-rule pt-8">
               {cs.links?.article && (
                 <a
                   href={cs.links.article.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 border border-ink/25 px-4 py-2 text-sm text-ink transition-colors hover:border-ink hover:bg-ink/5"
+                  className={actionClass}
                 >
-                  <FileText size={16} /> Read the architecture write-up
+                  <FileText size={14} /> Read the architecture write-up
                 </a>
               )}
               {cs.links?.github && (
@@ -555,9 +527,9 @@ export default async function WorkCaseStudyPage({ params }: Params) {
                   href={cs.links.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 border border-ink/25 px-4 py-2 text-sm text-ink transition-colors hover:border-ink hover:bg-ink/5"
+                  className={actionClass}
                 >
-                  <GithubIcon size={16} /> View on GitHub
+                  <GithubIcon size={14} /> View on GitHub
                 </a>
               )}
               {cs.links?.youtube && (
@@ -565,42 +537,46 @@ export default async function WorkCaseStudyPage({ params }: Params) {
                   href={cs.links.youtube}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 border border-ink/25 px-4 py-2 text-sm text-ink transition-colors hover:border-ink hover:bg-ink/5"
+                  className={actionClass}
                 >
-                  <YoutubeIcon size={16} /> Watch the series
+                  <YoutubeIcon size={14} /> Watch the series
                 </a>
               )}
-              <Link
-                href="/#contact"
-                className="inline-flex items-center gap-2 border border-ink/25 px-4 py-2 text-sm text-ink transition-colors hover:border-ink hover:bg-ink/5"
-              >
+              <Link href="/#contact" className={actionClass}>
                 Ask me about it
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Closing nav */}
+        {/* ------------------------------------------------- closing nav */}
         {others.length > 0 && (
           <nav
             aria-label="More work"
-            className="mt-20 border-t border-ink/15 pt-10"
+            className="mt-20 border-t-2 border-ink pt-6 md:mt-24"
           >
-            <EditorialLabel>More experiments</EditorialLabel>
+            <Eyebrow tone="grey">More experiments</Eyebrow>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {others.map((o) => (
                 <Link
                   key={o.slug}
                   href={`/work/${o.slug}/`}
                   style={accentVars[o.accent]}
-                  className="group flex flex-col border border-ink/15 bg-paper-soft p-6 transition-colors hover:border-ink/40"
+                  className="group flex items-start justify-between gap-4 border border-rule bg-paper-soft p-6 transition-colors hover:border-ink"
                 >
-                  <EditorialLabel className="text-(--accent-ink)">
-                    Experiment {o.experiment.n} / {o.experiment.kind}
-                  </EditorialLabel>
-                  <span className="mt-2 font-display text-xl leading-snug text-ink transition-colors group-hover:text-(--accent-ink)">
-                    {o.title}
+                  <span>
+                    <Eyebrow tone="accent" as="span">
+                      Experiment {o.experiment.n} / {o.experiment.kind}
+                    </Eyebrow>
+                    <span className="mt-2.5 block font-display text-[1.15rem] leading-snug font-semibold [font-stretch:94%] text-ink transition-colors group-hover:text-(--accent-ink)">
+                      {o.title}
+                    </span>
                   </span>
+                  <ArrowUpRight
+                    aria-hidden
+                    size={18}
+                    className="mt-0.5 shrink-0 text-grey transition-colors group-hover:text-ink"
+                  />
                 </Link>
               ))}
             </div>

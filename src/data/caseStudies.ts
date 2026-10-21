@@ -645,6 +645,13 @@ export const caseStudies: Record<CaseStudy["slug"], CaseStudy> = {
   },
 };
 
+/**
+ * Shown on any case study flagged `confidential`. Kept here so the disclosure
+ * is one string rather than copy embedded in a component.
+ */
+export const confidentialityNote =
+  "Production work under confidentiality — screenshots and details are sanitised (student data, internal URLs, private metrics removed) before publishing.";
+
 /** Display order for featured work on the homepage. */
 export const featuredSlugs = [
   "simplied",
