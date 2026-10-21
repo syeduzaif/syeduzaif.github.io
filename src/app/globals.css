@@ -124,43 +124,6 @@ h3 {
   background-size: 24px 24px;
 }
 
-/* Highlighter mark — pairs with <Mark tone>; ink text stays on top */
-.marker {
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-  padding: 0.02em 0.18em;
-  border-radius: 2px;
-}
-
-/* Observation → question → response reveal. Content is always in the DOM;
-   pointer-fine devices get a folded state that opens on hover/focus-within.
-   Touch devices and no-hover contexts see it expanded — nothing essential
-   is hover-only. Reduced-motion users keep the behaviour minus transition. */
-.inquiry-more {
-  display: grid;
-  grid-template-rows: 1fr;
-}
-.inquiry-more > div {
-  overflow: hidden;
-  min-height: 0;
-}
-@media (hover: hover) and (pointer: fine) {
-  .inquiry-more {
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.45s var(--ease-out-soft);
-  }
-  .inquiry:hover .inquiry-more,
-  .inquiry:focus-within .inquiry-more {
-    grid-template-rows: 1fr;
-  }
-  .inquiry-hint {
-    display: inline-flex;
-  }
-}
-.inquiry-hint {
-  display: none;
-}
-
 /* Skip link — visible only when focused */
 .skip-link {
   position: fixed;
