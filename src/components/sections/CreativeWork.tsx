@@ -1,4 +1,5 @@
 import { creativeVideos } from "@/data/creative";
+import { siteConfig } from "@/data/siteConfig";
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { SectionHeader } from "@/components/ui/SectionHeader";
@@ -6,26 +7,32 @@ import { StoryObservation } from "@/components/lab/StoryObservation";
 
 /** Creative work as observations that became stories — no autoplaying video. */
 export function CreativeWork() {
+  const copy = siteConfig.sections.creative;
+
   return (
     <Section
       id="creative"
       labelledBy="creative-heading"
-      className="border-y border-ink/10 bg-paper-soft/60"
+      className="border-t border-rule"
     >
       <Container>
         <SectionHeader
-          eyebrow="03 / Creative"
+          eyebrow={copy.eyebrow}
           id="creative-heading"
-          title="Observations that became stories"
-          intro="The same habit that drives the product work — noticing something small and following it — pointed at people instead of software. Video opens on YouTube; nothing autoplays here."
+          title={copy.heading}
+          intro={copy.intro}
         />
-        <div className="mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
+        <div className="mt-14 grid gap-10 md:grid-cols-3 md:gap-0">
           {creativeVideos.map((video, i) => (
-            <StoryObservation
+            <div
               key={video.title}
-              video={video}
-              n={String(i + 1).padStart(2, "0")}
-            />
+              className="md:border-r md:border-rule md:px-7 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
+            >
+              <StoryObservation
+                video={video}
+                n={String(i + 1).padStart(2, "0")}
+              />
+            </div>
           ))}
         </div>
       </Container>

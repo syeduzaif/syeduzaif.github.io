@@ -1,49 +1,40 @@
 import { credibilityFacts } from "@/data/highlights";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
-import { HandDrawnArrow } from "@/components/lab/HandDrawnArrow";
-import { Annotation } from "@/components/lab/Annotation";
-import { cn } from "@/lib/utils";
-
-/** Uneven vertical rhythm — annotations pinned along a shared rule. */
-const offsets = ["", "md:translate-y-3", "md:-translate-y-1", "md:translate-y-4"];
-const underlines = ["text-orange", "text-blue", "text-green", "text-yellow"];
 
 /**
- * Product evidence strip — metrics presented as editorial annotations along a
- * horizontal composition, not four identical stat cards. Notes carry the
- * honesty boundaries (downloads = team/product outcome).
+ * Product evidence — a four-column spec table bounded by rules. The notes
+ * carry the honesty boundaries (downloads are a team/product outcome, the
+ * load figure was profiled before it was restructured).
  */
 export function CredibilityStrip() {
   return (
-    <section
-      aria-label="Key facts"
-      className="border-y border-ink/15 bg-paper-soft py-12"
-    >
+    <section aria-label="Key facts" className="pb-20 md:pb-28">
       <Container>
-        <ul className="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="grid border-t-2 border-ink sm:grid-cols-2 lg:grid-cols-4">
           {credibilityFacts.map((fact, i) => (
-            <li key={fact.label} className={cn("max-w-[16rem]", offsets[i])}>
+            <li
+              key={fact.label}
+              className="border-b border-rule py-7 pr-8 sm:border-b-0 lg:border-r lg:last:border-r-0"
+            >
               <Reveal delay={i * 0.05}>
-                <span className="font-display text-[1.7rem] leading-none text-ink">
-                  {fact.value}
-                </span>
-                <HandDrawnArrow
-                  variant="underline"
-                  className={cn("mt-1.5 block h-2 w-24", underlines[i])}
-                />
-                <p className="mt-2 font-mono text-[0.68rem] uppercase tracking-[0.14em] text-grey">
+                <p className="font-mono text-[0.62rem] font-medium tracking-[0.16em] text-grey uppercase">
                   {fact.label}
                 </p>
+                <p className="mt-3 font-display text-[1.75rem] leading-none font-semibold tracking-tight text-ink">
+                  {fact.value}
+                </p>
                 {fact.note && (
-                  <Annotation className="mt-1.5 text-[0.92rem]">
-                    ↳ {fact.note}
-                  </Annotation>
+                  <p className="mt-3 max-w-[22ch] text-[0.82rem] leading-snug text-grey">
+                    <span aria-hidden>↳ </span>
+                    {fact.note}
+                  </p>
                 )}
               </Reveal>
             </li>
           ))}
         </ul>
+        <div className="border-t border-rule" />
       </Container>
     </section>
   );

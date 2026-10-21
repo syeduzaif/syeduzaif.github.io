@@ -1,59 +1,69 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { siteConfig } from "@/data/siteConfig";
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
-import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Reveal } from "@/components/ui/Reveal";
-import { MediaFragment } from "@/components/lab/MediaFragment";
-import { Mark } from "@/components/lab/Mark";
 
-/** Short about fragment — portrait pinned to the page + the central idea. */
+/** Short about fragment — portrait beside the central idea. */
 export function AboutPreview() {
+  const about = siteConfig.sections.about;
+
   return (
     <Section id="about" labelledBy="about-heading">
-      <Container className="grid gap-12 md:grid-cols-[0.85fr_1.15fr] md:items-center md:gap-16">
+      <Container className="grid gap-12 md:grid-cols-[0.8fr_1.2fr] md:gap-16">
         <Reveal>
-          <MediaFragment
-            src="/images/profile.webp"
-            alt="Syed Uzaif"
-            label="The person behind the experiments"
-            caption="Karachi → remote · Flutter by trade, storytelling by habit"
-            rotate={-1.5}
-            taped
-            // Same file the hero already loads, so lazy saves no bytes here —
-            // it only leaves this below-the-fold copy as the last `loading`
-            // value Next records for the URL, which trips its LCP hint.
-            eager
-            sizes="(max-width:768px) 80vw, 400px"
-            className="mx-auto max-w-[400px] md:mx-0"
-          />
+          <figure>
+            <div className="relative aspect-[4/5] overflow-hidden bg-paper-soft">
+              <Image
+                src="/images/profile.webp"
+                alt="Syed Uzaif"
+                fill
+                sizes="(max-width:768px) 100vw, 400px"
+                /* Same file the hero already loads, so lazy saves no bytes
+                   here — it only leaves this below-the-fold copy as the last
+                   `loading` value Next records for the URL, tripping its LCP
+                   hint. */
+                loading="eager"
+                className="object-cover"
+              />
+              <figcaption className="absolute bottom-3 left-3 bg-paper px-2.5 py-1.5 font-mono text-[0.6rem] font-semibold tracking-[0.14em] text-ink uppercase">
+                {about.photoLabel}
+              </figcaption>
+            </div>
+            <p className="mt-3 font-mono text-[0.65rem] tracking-[0.1em] text-grey">
+              {about.photoCaption}
+            </p>
+          </figure>
         </Reveal>
 
         <div>
-          <SectionHeader
-            eyebrow="04 / About"
-            id="about-heading"
-            title="Engineering gave structure to my creativity."
-          />
-          <p className="mt-6 text-grey" style={{ maxWidth: "var(--width-reading)" }}>
-            I spent years experimenting with video, design, photography, and
-            storytelling before moving deeply into mobile development. Those
-            interests were never separate — they taught me how people notice,
-            understand, and respond to experiences. Today, I use that
-            perspective to build mobile products that are reliable, thoughtful,
-            and easier to communicate.
-          </p>
-          <p className="mt-6 font-display text-[1.4rem] leading-snug text-ink">
-            I want to understand <Mark>why something should exist</Mark> — not
-            only how it should be built.
-          </p>
+          <Reveal>
+            <p className="font-mono text-eyebrow font-medium tracking-[0.16em] text-orange-deep uppercase">
+              {about.eyebrow}
+            </p>
+            <h2
+              id="about-heading"
+              className="mt-5 text-h2 [font-stretch:90%] text-ink text-balance"
+            >
+              {about.heading}
+            </h2>
+            <p className="mt-7 max-w-[58ch] text-grey">{about.body}</p>
 
-          <Link
-            href="/about/"
-            className="mt-8 inline-flex items-center gap-1.5 font-medium text-orange-deep transition-colors hover:text-ink"
-          >
-            Read the full story <ArrowUpRight size={16} />
-          </Link>
+            <blockquote className="mt-8 border-l-[3px] border-orange pl-5">
+              <p className="font-display text-[clamp(1.25rem,2.1vw,1.7rem)] leading-snug font-medium italic text-ink">
+                {about.quote}
+              </p>
+            </blockquote>
+
+            <Link
+              href="/about/"
+              className="mt-8 inline-flex items-center gap-1.5 border-b border-ink pb-1 font-medium text-ink transition-colors hover:border-orange-deep hover:text-orange-deep"
+            >
+              {about.cta} <ArrowUpRight size={16} />
+            </Link>
+          </Reveal>
         </div>
       </Container>
     </Section>

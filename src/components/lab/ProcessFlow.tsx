@@ -1,17 +1,16 @@
 "use client";
 
-import { Fragment, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { Undo2 } from "lucide-react";
 import type { ProcessStage } from "@/data/process";
-import { HandDrawnArrow } from "./HandDrawnArrow";
-import { Annotation } from "./Annotation";
 import { cn } from "@/lib/utils";
 
 /**
- * "How I think" as a connected, non-linear sequence. Proper tabs semantics:
- * arrow keys move between stages, each stage reveals a real example from
- * shipped work. The loop-back arrow makes the revision cycle explicit.
- * All panel content is server-rendered into the DOM (hidden attr), so the
- * information survives without JavaScript and stays indexable.
+ * "How I think" as a connected, non-linear sequence, rendered on the night
+ * band. Proper tabs semantics: arrow keys move between stages, each stage
+ * reveals a real example from shipped work. All panel content is
+ * server-rendered into the DOM (hidden attr), so the information survives
+ * without JavaScript and stays indexable.
  */
 export function ProcessFlow({
   stages,
@@ -47,14 +46,15 @@ export function ProcessFlow({
 
   return (
     <div>
-      <div
-        role="tablist"
-        aria-label="How I think — stages"
-        className="flex flex-wrap items-center gap-y-3"
-      >
-        {stages.map((s, i) => (
-          <Fragment key={s.id}>
+      <div className="flex flex-wrap items-stretch gap-2">
+        <div
+          role="tablist"
+          aria-label="How I think — stages"
+          className="grid flex-1 grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6"
+        >
+          {stages.map((s, i) => (
             <button
+              key={s.id}
               ref={(el) => {
                 tabRefs.current[i] = el;
               }}
@@ -67,37 +67,36 @@ export function ProcessFlow({
               onClick={() => setActive(i)}
               onKeyDown={(e) => onKeyDown(e, i)}
               className={cn(
-                "flex items-center gap-2 border px-3.5 py-2 font-mono text-[0.7rem] uppercase tracking-[0.14em] transition-colors",
+                "flex flex-col items-start gap-5 px-4 py-3.5 text-left transition-colors",
                 i === active
-                  ? "border-ink bg-ink text-paper-soft"
-                  : "border-ink/25 text-ink hover:border-ink",
+                  ? "bg-yellow text-ink"
+                  : "bg-night-2 text-on-night hover:bg-[#282930]",
               )}
             >
               <span
                 aria-hidden
-                className={i === active ? "text-yellow" : "text-grey"}
+                className={cn(
+                  "font-mono text-[0.6rem] tracking-[0.14em]",
+                  i === active ? "text-ink/70" : "text-on-night-2",
+                )}
               >
                 {String(i + 1).padStart(2, "0")}
               </span>
-              {s.label}
+              <span className="font-display text-[1.05rem] font-semibold tracking-tight uppercase">
+                {s.label}
+              </span>
             </button>
-            {i < stages.length - 1 && (
-              <HandDrawnArrow
-                variant="right"
-                className="mx-1.5 hidden h-3.5 w-7 text-grey sm:block"
-              />
-            )}
-          </Fragment>
-        ))}
-        <span
+          ))}
+        </div>
+        <p
           aria-hidden
-          className="ml-3 hidden items-center gap-1.5 text-orange-deep lg:flex"
+          className="hidden shrink-0 flex-col justify-center gap-1 pl-3 text-yellow lg:flex"
         >
-          <HandDrawnArrow variant="loop" className="h-8 w-14" />
-          <Annotation className="text-[0.95rem] text-orange-deep">
+          <Undo2 size={18} />
+          <span className="font-display text-[0.95rem] italic text-on-night-2">
             and back again
-          </Annotation>
-        </span>
+          </span>
+        </p>
       </div>
 
       {stages.map((s, i) => (
@@ -107,28 +106,30 @@ export function ProcessFlow({
           id={`stage-panel-${s.id}`}
           aria-labelledby={`stage-tab-${s.id}`}
           hidden={i !== active}
-          className="mt-8 border-l-2 border-ink pl-5 md:pl-7"
+          className="mt-12 border-t border-[#F1F1EC1F] pt-10"
         >
-          <p
-            className="font-display text-[1.35rem] leading-snug text-ink"
-            style={{ maxWidth: "var(--width-reading)" }}
-          >
-            {s.question}
-          </p>
-          <div className="mt-4 max-w-[34rem] border border-ink/15 bg-paper-soft p-4">
-            <p className="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-grey">
-              From {s.project}
-            </p>
-            <p className="mt-1.5 text-sm leading-relaxed text-grey">
-              {s.example}
-            </p>
+          <div className="gap-12 md:grid md:grid-cols-[1.4fr_1fr]">
+            <div>
+              <p className="font-mono text-[0.6rem] tracking-[0.16em] text-on-night-2 uppercase">
+                {String(i + 1).padStart(2, "0")} {s.label} — Question
+              </p>
+              <p className="mt-5 font-display text-[clamp(1.4rem,2.6vw,2.1rem)] leading-tight font-medium [font-stretch:92%] text-on-night text-balance">
+                {s.question}
+              </p>
+            </div>
+            <div className="mt-8 border-l-2 border-yellow pl-5 md:mt-0">
+              <p className="font-mono text-[0.6rem] font-medium tracking-[0.16em] text-yellow uppercase">
+                From {s.project}
+              </p>
+              <p className="mt-3 leading-relaxed text-on-night">{s.example}</p>
+            </div>
           </div>
+
+          <p className="mt-12 max-w-[60ch] text-[0.92rem] text-on-night-2">
+            {loopNote}
+          </p>
         </div>
       ))}
-
-      <p className="mt-8">
-        <Annotation>{loopNote}</Annotation>
-      </p>
     </div>
   );
 }

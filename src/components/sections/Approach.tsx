@@ -1,26 +1,26 @@
 import { processStages, processLoopNote } from "@/data/process";
+import { siteConfig } from "@/data/siteConfig";
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Reveal } from "@/components/ui/Reveal";
 import { ProcessFlow } from "@/components/lab/ProcessFlow";
 
-/** "How I think" — six connected stages with a deliberate loop. */
+/** "How I think" — six connected stages with a deliberate loop, on the night band. */
 export function Approach() {
+  const copy = siteConfig.sections.process;
+
   return (
-    <Section
-      id="process"
-      labelledBy="process-heading"
-      className="border-y border-ink/10 bg-paper-soft/60"
-    >
+    <Section id="process" labelledBy="process-heading" className="bg-night">
       <Container>
         <SectionHeader
-          eyebrow="02 / Process"
+          eyebrow={copy.eyebrow}
           id="process-heading"
-          title="How I think"
-          intro="Six stages I actually move through — each one tied to a real example from shipped work. Select a stage to see it."
+          title={copy.heading}
+          intro={copy.intro}
+          onNight
         />
-        <Reveal className="mt-12">
+        <Reveal className="mt-14">
           <ProcessFlow stages={[...processStages]} loopNote={processLoopNote} />
         </Reveal>
       </Container>

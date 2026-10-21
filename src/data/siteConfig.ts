@@ -38,8 +38,44 @@ export const siteConfig = {
       "Each project is a documented investigation — from the first observation to what shipped, what was rejected, and what it taught me.",
   },
 
+  /**
+   * Homepage section mastheads. These lived inline in the section components
+   * before — kept here so no component hardcodes user-facing copy.
+   */
+  sections: {
+    process: {
+      eyebrow: "02 / Process",
+      heading: "How I think",
+      intro:
+        "Six stages I actually move through — each one tied to a real example from shipped work. Select a stage to see it.",
+    },
+    ownership: {
+      eyebrow: "Ownership map",
+      heading: "What I touch in a product",
+      intro:
+        "Honest boundaries, drawn as a map: what I own today, what I contribute to alongside the team, and what I'm deliberately growing toward.",
+    },
+    creative: {
+      eyebrow: "03 / Creative",
+      heading: "Observations that became stories",
+      intro:
+        "The same habit that drives the product work — noticing something small and following it — pointed at people instead of software. Video opens on YouTube; nothing autoplays here.",
+    },
+    about: {
+      eyebrow: "04 / About",
+      heading: "Engineering gave structure to my creativity.",
+      body: "I spent years experimenting with video, design, photography, and storytelling before moving deeply into mobile development. Those interests were never separate — they taught me how people notice, understand, and respond to experiences. Today, I use that perspective to build mobile products that are reliable, thoughtful, and easier to communicate.",
+      quote:
+        "I want to understand why something should exist — not only how it should be built.",
+      photoLabel: "The person behind the experiments",
+      photoCaption: "Karachi → remote · Flutter by trade, storytelling by habit",
+      cta: "Read the full story",
+    },
+  },
+
   /** Contact section copy — speaks to employers and founders equally. */
   contact: {
+    eyebrow: "05 / Contact",
     heading: "Building a mobile product or team?",
     intro:
       "I'm open to remote mobile roles, startup teams, and selected product-development opportunities where thoughtful execution and ownership matter.",

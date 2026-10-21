@@ -56,10 +56,8 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-40 border-b transition-colors duration-300",
-        scrolled
-          ? "border-ink/10 bg-paper/85 backdrop-blur"
-          : "border-transparent",
+        "fixed inset-x-0 top-0 z-40 border-b border-rule transition-colors duration-300",
+        scrolled ? "bg-paper/90 backdrop-blur" : "bg-paper",
       )}
     >
       <div
@@ -68,8 +66,9 @@ export function Navbar() {
       >
         <Link
           href="/#top"
-          className="font-mono text-[0.78rem] font-semibold tracking-[0.14em] text-ink uppercase"
+          className="flex items-center gap-2.5 font-mono text-[0.72rem] font-semibold tracking-[0.14em] text-ink uppercase"
         >
+          <span aria-hidden className="size-2.5 bg-orange" />
           {siteConfig.name}
           <span className="ml-1.5 font-normal text-grey">
             / {siteConfig.lab}
