@@ -12,6 +12,14 @@ export interface TrioApp {
  * side, upright and evenly ruled, with the middle frame lifted — the
  * arrangement the design draws. Used as the SimpliEd cover on the homepage
  * and the case-study header.
+ *
+ * Three 9:19 frames across a phone leave each about 90px wide, which is far
+ * too small to read a screenshot — and stacking them would run to roughly
+ * 2000px. So below `sm` the row becomes a snapping scroll strip: each frame
+ * keeps a legible width, and the slice of the next one showing is the
+ * affordance. `tabIndex` makes that strip scrollable by keyboard, since the
+ * frames themselves hold nothing focusable. It costs one inert tab stop at
+ * wider widths, which is the cheaper half of the trade.
  */
 export function AppTrio({
   apps,
@@ -26,23 +34,31 @@ export function AppTrio({
   className?: string;
 }) {
   const lift = ["md:translate-y-2", "md:-translate-y-2", "md:translate-y-3"];
+  const shown = apps.slice(0, 3);
 
   return (
     <div className={className}>
-      <div className="grid grid-cols-3 items-start gap-2.5 sm:gap-4">
-        {apps.slice(0, 3).map((app, i) => (
-          <MediaFragment
+      <ul
+        tabIndex={0}
+        aria-label={shown.map((a) => a.label).join(", ")}
+        className="flex snap-x snap-mandatory items-start gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:overflow-visible sm:pb-0"
+      >
+        {shown.map((app, i) => (
+          <li
             key={app.src}
-            src={app.src}
-            alt={app.alt}
-            label={app.label}
-            priority={priority}
-            aspect="aspect-[9/19]"
-            sizes="(max-width:768px) 30vw, 220px"
-            className={cn(lift[i])}
-          />
+            className={cn("w-[62%] shrink-0 snap-start sm:w-auto", lift[i])}
+          >
+            <MediaFragment
+              src={app.src}
+              alt={app.alt}
+              label={app.label}
+              priority={priority}
+              aspect="aspect-[9/19]"
+              sizes="(max-width:640px) 50vw, (max-width:1024px) 30vw, 220px"
+            />
+          </li>
         ))}
-      </div>
+      </ul>
       {note && (
         <p className="mt-4 font-mono text-[0.62rem] leading-relaxed tracking-[0.1em] text-grey uppercase">
           {note}
