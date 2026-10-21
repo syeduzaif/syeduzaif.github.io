@@ -1,46 +1,63 @@
 @import "tailwindcss";
 
 /* ============================================================
-   Design tokens — "Experimental Editorial Product Lab"
-   Warm paper, ink, and a small set of accents used deliberately.
-   Tailwind v4 CSS-first config. @theme values also emit as CSS
-   custom properties on :root, so they work in inline styles.
+   Design tokens — "Signal Spec"
+   Swiss/International: flat ground, hairline rules, one hot
+   signal accent, and dark bands that carry their own text
+   colours. Tailwind v4 CSS-first config. @theme values also
+   emit as CSS custom properties on :root, so they work in
+   inline styles.
+
+   Token NAMES are carried over from the previous palette on
+   purpose — ~450 usages across 32 files map onto the same
+   roles, so this is a value swap, not a rename.
    ============================================================ */
 @theme {
   /* Color — base */
-  --color-paper: #f2efe7; /* page background, warm paper */
-  --color-paper-soft: #faf9f5; /* raised cards / panels */
-  --color-ink: #171717; /* primary text */
-  --color-grey: #6b675f; /* secondary text — AA on paper (#77736B fell just short) */
+  --color-paper: #f1f1ec; /* page ground */
+  --color-paper-soft: #e4e5de; /* inset/recessed panels — NOTE: darker than paper now */
+  --color-ink: #111215; /* primary text (16.5:1 on paper) */
+  --color-grey: #4a4d54; /* secondary text (7.5:1 on paper) */
+  --color-rule: #11121529; /* hairline rules — ink at 16% */
 
-  /* Color — accents. The *-deep variants are the small-text-safe versions;
-     green + yellow are FILL/HIGHLIGHT ONLY (never text on paper). */
-  --color-orange: #d45d32; /* primary accent — large text / marks / borders */
-  --color-orange-deep: #b04a26; /* orange for small text (≈4.7:1 on paper) */
-  --color-blue: #3155ff; /* SimpliEd identity (≈4.7:1 on paper) */
-  --color-blue-deep: #2743d0; /* blue for small text (≈6.5:1 on paper) */
-  --color-green: #b8e62e; /* Budget Buddy identity — fills/highlights only */
-  --color-green-deep: #55700f; /* green for text (≈4.9:1 on paper) */
-  --color-yellow: #f0d95c; /* sticky notes / highlighter — fills only */
+  /* Color — dark bands (Process, Contact-adjacent panels, Footer).
+     These carry their own foreground pair; never mix with ink/grey. */
+  --color-night: #111215;
+  --color-night-2: #1c1d22; /* raised cell inside a night band */
+  --color-on-night: #f1f1ec; /* 16.5:1 on night */
+  --color-on-night-2: #a3a6ad; /* 7.7:1 on night */
 
-  /* Fonts (font-serif / font-sans / font-mono utilities) */
-  --font-serif: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
-  --font-sans: var(--font-geist), system-ui, -apple-system, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  /* Color — accents. The *-deep variants are the small-text-safe
+     versions; the base orange/green FAIL AA on paper (2.97 / 2.98)
+     so they are large-text, fills, rules and UI only.
+     Yellow (lime) is a fill/highlight on dark ONLY — 1.02 on paper. */
+  --color-orange: #ff4a1c; /* signal — large text, fills, rules (5.6:1 on night) */
+  --color-orange-deep: #c23815; /* signal for small text (4.8:1 on paper) */
+  --color-blue: #3557ff; /* SimpliEd identity (4.7:1 on paper — AA) */
+  --color-blue-deep: #2a46cc; /* blue for small text */
+  --color-green: #16a05d; /* Budget Buddy identity — fills/large only */
+  --color-green-deep: #117a47; /* green for small text (4.8:1 on paper) */
+  --color-yellow: #d2ff3d; /* lime — fills/highlights on NIGHT only (16.2:1 there) */
 
-  /* Type scale — fluid, editorial (text-* utilities) */
-  --text-eyebrow: 0.72rem;
-  --text-hero: clamp(2.5rem, 8vw, 6.25rem);
-  --text-h2: clamp(2rem, 4.5vw, 3.4rem);
-  --text-h3: clamp(1.45rem, 2.4vw, 2rem);
-  --text-lead: clamp(1.1rem, 1.5vw, 1.3rem);
-  --text-body: 1.0625rem;
+  /* Fonts (font-display / font-sans / font-mono utilities) */
+  --font-display: var(--font-bricolage), "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", Menlo, monospace;
 
-  /* Radii (rounded-* utilities) — tighter, more print-like */
-  --radius-sm: 3px;
-  --radius-md: 8px;
-  --radius-lg: 14px;
-  --radius-xl: 22px;
+  /* Type scale — fluid, display-led (text-* utilities) */
+  --text-eyebrow: 0.6875rem;
+  --text-hero: clamp(2.75rem, 8.5vw, 6.5rem);
+  --text-h2: clamp(2.25rem, 5.5vw, 5rem);
+  --text-h3: clamp(1.6rem, 2.8vw, 2.4rem);
+  --text-lead: clamp(1rem, 1.3vw, 1.125rem);
+  --text-body: 1rem;
+  --text-meta: 0.75rem;
+
+  /* Radii (rounded-* utilities) — mostly square; pills for chips */
+  --radius-sm: 2px;
+  --radius-md: 6px;
+  --radius-lg: 16px;
+  --radius-xl: 28px;
 
   /* Motion */
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
@@ -49,7 +66,7 @@
 /* Layout widths + the per-project accent slot (overridden inline per
    experiment: --accent for fills/borders, --accent-ink for small text). */
 :root {
-  --width-container: 1240px;
+  --width-container: 1320px;
   --width-reading: 680px;
   --accent: var(--color-orange);
   --accent-ink: var(--color-orange-deep);
@@ -75,34 +92,28 @@ body {
 h1,
 h2,
 h3 {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  line-height: 1.02;
-  letter-spacing: -0.01em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 0.96;
+  letter-spacing: -0.03em;
 }
 
-/* Visible, high-contrast focus — orange reads on both paper and ink */
+/* Visible, high-contrast focus — signal reads on both paper and night */
 :focus-visible {
   outline: 2px solid var(--color-orange);
   outline-offset: 3px;
   border-radius: 2px;
 }
 
+/* Lime ground with ink on top — 16:1, and it survives on dark bands too */
 ::selection {
   background: var(--color-yellow);
   color: var(--color-ink);
 }
 
-/* Paper grain — static, multiply keeps it print-like on the light ground */
-.grain::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  pointer-events: none;
-  opacity: 0.04;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+/* Hairline rule, the workhorse divider of this layout */
+.rule {
+  border-color: var(--color-rule);
 }
 
 /* Visible working-grid backdrop for lab/technical panels */

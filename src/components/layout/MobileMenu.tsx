@@ -57,7 +57,7 @@ export function MobileMenu() {
                 <span className="font-mono text-xs text-orange-deep">
                   {item.n}
                 </span>
-                <span className="font-serif text-3xl text-ink group-hover:text-orange-deep">
+                <span className="font-display text-3xl text-ink group-hover:text-orange-deep">
                   {item.label}
                 </span>
               </a>

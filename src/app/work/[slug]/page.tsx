@@ -136,7 +136,7 @@ export default async function WorkCaseStudyPage({ params }: Params) {
       glyph: "observation",
       body: (
         <>
-          <p className="font-serif text-[1.35rem] leading-snug text-ink">
+          <p className="font-display text-[1.35rem] leading-snug text-ink">
             {cs.inquiry.observation}
           </p>
           <p className="mt-4">{cs.overview}</p>
@@ -192,7 +192,7 @@ export default async function WorkCaseStudyPage({ params }: Params) {
               <span aria-hidden className="mt-1 text-(--accent-ink)">
                 <Glyph kind="unresolved" size={12} />
               </span>
-              <span className="font-serif text-[1.1rem] italic leading-snug text-ink/85">
+              <span className="font-display text-[1.1rem] italic leading-snug text-ink/85">
                 {q}
               </span>
             </li>
@@ -598,7 +598,7 @@ export default async function WorkCaseStudyPage({ params }: Params) {
                   <EditorialLabel className="text-(--accent-ink)">
                     Experiment {o.experiment.n} / {o.experiment.kind}
                   </EditorialLabel>
-                  <span className="mt-2 font-serif text-xl leading-snug text-ink transition-colors group-hover:text-(--accent-ink)">
+                  <span className="mt-2 font-display text-xl leading-snug text-ink transition-colors group-hover:text-(--accent-ink)">
                     {o.title}
                   </span>
                 </Link>

@@ -76,7 +76,7 @@ export function MediaFrame({
         >
           {media.label.charAt(0)}
         </span>
-        <span className="text-center font-serif text-lg leading-tight text-ink">
+        <span className="text-center font-display text-lg leading-tight text-ink">
           {media.label}
         </span>
         {media.feature && (

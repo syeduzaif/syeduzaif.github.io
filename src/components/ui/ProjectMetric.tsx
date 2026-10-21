@@ -11,7 +11,7 @@ export function ProjectMetric({ metrics }: { metrics: Metric[] }) {
         <div key={m.label} className="border-l-2 pl-4" style={{ borderColor: "var(--accent)" }}>
           <dt className="sr-only">{m.label}</dt>
           <dd>
-            <span className="block font-serif text-[1.6rem] leading-tight text-ink">
+            <span className="block font-display text-[1.6rem] leading-tight text-ink">
               {m.value}
             </span>
             <span className="mt-1 block font-mono text-[0.68rem] uppercase tracking-[0.12em] text-grey">

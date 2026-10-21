@@ -25,7 +25,7 @@ export function CredibilityStrip() {
           {credibilityFacts.map((fact, i) => (
             <li key={fact.label} className={cn("max-w-[16rem]", offsets[i])}>
               <Reveal delay={i * 0.05}>
-                <span className="font-serif text-[1.7rem] leading-none text-ink">
+                <span className="font-display text-[1.7rem] leading-none text-ink">
                   {fact.value}
                 </span>
                 <HandDrawnArrow

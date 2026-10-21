@@ -15,9 +15,13 @@ export const siteConfig = {
     "I turn unclear ideas into thoughtful mobile products by combining engineering, product thinking, visual judgment, and end-to-end ownership.",
 
   hero: {
-    /** Editorial headline, one line per entry; `marked` gets the hand-drawn circle. */
+    eyebrow: "Field notes of a mobile product engineer",
+    /** Editorial headline, one line per entry; `marked` gets the signal pill. */
     lines: ["I build", "mobile products", "from messy ideas."],
-    marked: "messy ideas",
+    marked: "messy ideas.",
+    /** The open question pinned beside the hero — still unresolved, deliberately. */
+    question:
+      "what if the alarm refuses to stop until you actually sit up?",
     supporting:
       "Mobile Product Engineer combining Flutter engineering, product thinking, ownership, and visual storytelling.",
     proof:

@@ -14,7 +14,7 @@ export function Annotation({
   return (
     <span
       className={cn(
-        "inline-block font-serif text-[1.05rem] leading-snug italic text-grey",
+        "inline-block font-display text-[1.05rem] leading-snug italic text-grey",
         className,
       )}
     >

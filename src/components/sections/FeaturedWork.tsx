@@ -108,7 +108,7 @@ function SimpliEdVisual({ cs }: { cs: CaseStudy }) {
       )}
       <div className="mt-5 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-t border-ink/10 pt-4">
         <div>
-          <span className="font-serif text-2xl leading-none text-ink">
+          <span className="font-display text-2xl leading-none text-ink">
             3.2s → 1.76s
           </span>
           <HandDrawnArrow

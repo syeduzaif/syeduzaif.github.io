@@ -43,7 +43,7 @@ export function Contact() {
 
           <a
             href={links.email}
-            className="mt-10 inline-block font-serif text-[clamp(1.5rem,3.6vw,2.7rem)] leading-tight text-paper-soft underline decoration-orange decoration-2 underline-offset-8 transition-colors hover:decoration-paper-soft"
+            className="mt-10 inline-block font-display text-[clamp(1.5rem,3.6vw,2.7rem)] leading-tight text-paper-soft underline decoration-orange decoration-2 underline-offset-8 transition-colors hover:decoration-paper-soft"
           >
             {email}
           </a>

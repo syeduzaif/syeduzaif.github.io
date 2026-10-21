@@ -42,7 +42,7 @@ export function DecisionRecord({
           Decision {n}
         </EditorialLabel>
       </header>
-      <p className="mt-3 font-serif text-xl leading-snug text-ink">
+      <p className="mt-3 font-display text-xl leading-snug text-ink">
         {decision.decision}
       </p>
       <dl className="mt-4 space-y-3 border-t border-ink/10 pt-4">

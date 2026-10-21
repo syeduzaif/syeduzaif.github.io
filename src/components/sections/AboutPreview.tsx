@@ -43,7 +43,7 @@ export function AboutPreview() {
             perspective to build mobile products that are reliable, thoughtful,
             and easier to communicate.
           </p>
-          <p className="mt-6 font-serif text-[1.4rem] leading-snug text-ink">
+          <p className="mt-6 font-display text-[1.4rem] leading-snug text-ink">
             I want to understand <Mark>why something should exist</Mark> — not
             only how it should be built.
           </p>

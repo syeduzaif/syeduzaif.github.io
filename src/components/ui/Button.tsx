@@ -4,17 +4,21 @@ type Variant = "primary" | "secondary" | "link";
 type Size = "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-paper";
+  "inline-flex items-center justify-center gap-2 rounded-none font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-paper";
 
+/**
+ * `primary` is the signal fill. Ink on signal is 5.6:1, so the dark text is
+ * deliberate — paper on signal would only reach 3:1 and fail for button text.
+ */
 const variants: Record<Variant, string> = {
-  primary: "bg-ink text-paper-soft hover:bg-orange-deep",
-  secondary: "border border-ink/25 text-ink hover:border-ink hover:bg-ink/5",
-  link: "text-orange-deep underline-offset-4 hover:text-ink hover:underline px-0 py-0",
+  primary: "bg-orange text-ink hover:bg-ink hover:text-paper",
+  secondary: "border border-ink text-ink hover:bg-ink hover:text-paper",
+  link: "text-ink underline decoration-ink/40 underline-offset-4 hover:decoration-ink px-0 py-0",
 };
 
 const sizes: Record<Size, string> = {
   md: "text-sm px-5 py-2.5",
-  lg: "text-base px-6 py-3",
+  lg: "text-[0.95rem] px-6 py-3.5",
 };
 
 /**

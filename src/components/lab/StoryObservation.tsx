@@ -23,7 +23,7 @@ export function StoryObservation({
       <EditorialLabel className="text-orange-deep">
         Observation {n}
       </EditorialLabel>
-      <p className="mt-3 min-h-[3.4em] font-serif text-[1.3rem] leading-snug text-ink text-balance">
+      <p className="mt-3 min-h-[3.4em] font-display text-[1.3rem] leading-snug text-ink text-balance">
         {video.observation}
       </p>
 

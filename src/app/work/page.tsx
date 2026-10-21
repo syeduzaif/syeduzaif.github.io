@@ -43,7 +43,7 @@ export default function WorkIndexPage() {
                 <div className="grid gap-6 py-10 md:grid-cols-[auto_1fr_auto] md:items-start md:gap-10">
                   <span
                     aria-hidden
-                    className="font-serif text-4xl text-(--accent-ink) md:pt-1"
+                    className="font-display text-4xl text-(--accent-ink) md:pt-1"
                   >
                     {cs.experiment.n}
                   </span>
@@ -58,7 +58,7 @@ export default function WorkIndexPage() {
                         </span>
                       )}
                     </div>
-                    <h2 className="mt-3 font-serif text-h3 text-ink text-balance">
+                    <h2 className="mt-3 font-display text-h3 text-ink text-balance">
                       <Link
                         href={`/work/${slug}/`}
                         className="transition-colors hover:text-(--accent-ink)"

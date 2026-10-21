@@ -72,7 +72,7 @@ export default function AboutPage() {
                 </span>
                 <h2
                   id={slugify(part.heading)}
-                  className="font-serif text-h3 text-ink"
+                  className="font-display text-h3 text-ink"
                 >
                   {part.heading}
                 </h2>
@@ -89,7 +89,7 @@ export default function AboutPage() {
         <div className="mt-16 grid gap-12 border-t border-ink/15 pt-16 md:grid-cols-2 md:gap-16">
           <section aria-labelledby="journey">
             <EditorialLabel>Timeline</EditorialLabel>
-            <h2 id="journey" className="mt-3 font-serif text-h3 text-ink">
+            <h2 id="journey" className="mt-3 font-display text-h3 text-ink">
               The journey
             </h2>
             <div className="mt-6">
@@ -99,7 +99,7 @@ export default function AboutPage() {
 
           <section aria-labelledby="principles">
             <EditorialLabel>Working notes</EditorialLabel>
-            <h2 id="principles" className="mt-3 font-serif text-h3 text-ink">
+            <h2 id="principles" className="mt-3 font-display text-h3 text-ink">
               How I work
             </h2>
             <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-6">

@@ -1,28 +1,37 @@
-import { Instrument_Serif, Geist, Geist_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Inter, IBM_Plex_Mono } from "next/font/google";
 
 /**
- * Display / narrative — editorial serif. Instrument Serif ships weight 400
- * only (normal + italic). The italic doubles as the site's "handwritten"
- * annotation voice — controlled, not novelty-font childish.
+ * Display — Bricolage Grotesque. A variable grotesque with a tight, slightly
+ * mechanical cut; carries the oversized headlines and the big numerals.
+ * Variable across 200–800, so no explicit weight list.
  */
-export const serif = Instrument_Serif({
-  weight: "400",
-  style: ["normal", "italic"],
+export const display = Bricolage_Grotesque({
   subsets: ["latin"],
-  variable: "--font-instrument-serif",
+  variable: "--font-bricolage",
+  display: "swap",
+  /**
+   * next/font ships only `wght` for a variable font unless the other axes are
+   * requested. Without `opsz` the face renders at its small-text optical size
+   * — noticeably wider — which blew the hero headline past its column. `wdth`
+   * is here so the display sizes can be narrowed to match the design.
+   */
+  axes: ["opsz", "wdth"],
+});
+
+/** Body / interface — Inter. */
+export const sans = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
   display: "swap",
 });
 
-/** Body / interface — Geist (product & interface text). */
-export const sans = Geist({
+/**
+ * Technical labels, status bars, metadata — IBM Plex Mono. Not a variable
+ * font, so the weights actually used are listed explicitly.
+ */
+export const mono = IBM_Plex_Mono({
+  weight: ["400", "500", "600"],
   subsets: ["latin"],
-  variable: "--font-geist",
-  display: "swap",
-});
-
-/** Technical labels, annotations, metadata — Geist Mono. */
-export const mono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-geist-mono",
+  variable: "--font-plex-mono",
   display: "swap",
 });

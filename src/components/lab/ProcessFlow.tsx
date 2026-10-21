@@ -110,7 +110,7 @@ export function ProcessFlow({
           className="mt-8 border-l-2 border-ink pl-5 md:pl-7"
         >
           <p
-            className="font-serif text-[1.35rem] leading-snug text-ink"
+            className="font-display text-[1.35rem] leading-snug text-ink"
             style={{ maxWidth: "var(--width-reading)" }}
           >
             {s.question}

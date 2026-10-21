@@ -16,7 +16,7 @@ export function ExperimentNumber({
     <span
       aria-hidden
       className={cn(
-        "pointer-events-none select-none font-serif text-[clamp(4.5rem,9vw,8rem)] leading-none text-ink/[0.08]",
+        "pointer-events-none select-none font-display text-[clamp(4.5rem,9vw,8rem)] leading-none text-ink/[0.08]",
         className,
       )}
     >

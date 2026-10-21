@@ -37,7 +37,7 @@ export function ProductNote({
       style={{ transform: `rotate(${rotate}deg)` }}
     >
       {taped && <Tape />}
-      <p className="font-serif text-[1.05rem] leading-snug italic">{children}</p>
+      <p className="font-display text-[1.05rem] leading-snug italic">{children}</p>
       {label && (
         <p className="mt-2 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-ink/60">
           {label}
