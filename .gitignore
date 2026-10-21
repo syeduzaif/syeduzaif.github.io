@@ -56,3 +56,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+
+# pen.dev working artefacts — the source .pen + reference frames are tracked,
+# the throwaway slices, failed import and usage logs are not.
+designs/verify/
+designs/homepage-current.pen
+designs/.usage-*.json
