@@ -25,6 +25,8 @@ export const baseMetadata: Metadata = {
     "Syed Uzaif",
   ],
   alternates: { canonical: "/" },
+  /** Do not leak full URLs cross-origin, nothing at all on downgrade. */
+  referrer: "strict-origin-when-cross-origin",
   openGraph: {
     type: "website",
     url: siteConfig.url,
