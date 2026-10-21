@@ -1,19 +1,18 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { Tape } from "./Tape";
 
 /**
- * A photo/screenshot pinned to the working wall: paper mat, optional tape,
- * slight rotation, mono caption. Every visual should explain something — the
- * caption/label carries that explanation.
+ * A screenshot in a hairline frame: mono label above, mono caption below.
+ * Flat and square — the paper mat, tape and rotation of the previous look
+ * are gone; the design sits these upright on the panel ground.
+ *
+ * Every visual should explain something — the label/caption carries that.
  */
 export function MediaFragment({
   src,
   alt,
   caption,
   label,
-  rotate = 0,
-  taped,
   sizes,
   priority,
   eager,
@@ -24,10 +23,8 @@ export function MediaFragment({
   alt: string;
   /** Small explanatory caption below the image. */
   caption?: string;
-  /** Tiny mono tag above the image (e.g. "PRODUCTION / RELEASED"). */
+  /** Tiny mono tag above the image (e.g. "STUDENT APP"). */
   label?: string;
-  rotate?: number;
-  taped?: boolean;
   sizes?: string;
   priority?: boolean;
   /**
@@ -42,16 +39,9 @@ export function MediaFragment({
   className?: string;
 }) {
   return (
-    <figure
-      className={cn(
-        "relative border border-ink/15 bg-paper-soft p-2 shadow-[3px_4px_0_rgb(23_23_23/0.1)]",
-        className,
-      )}
-      style={rotate ? { transform: `rotate(${rotate}deg)` } : undefined}
-    >
-      {taped && <Tape />}
+    <figure className={cn("border border-rule bg-paper p-2", className)}>
       {label && (
-        <p className="mb-1.5 px-0.5 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-grey">
+        <p className="mb-1.5 px-0.5 font-mono text-[0.58rem] font-medium tracking-[0.14em] text-grey uppercase">
           {label}
         </p>
       )}
@@ -68,7 +58,7 @@ export function MediaFragment({
         />
       </div>
       {caption && (
-        <figcaption className="px-0.5 pt-2 pb-0.5 font-mono text-[0.68rem] leading-relaxed text-grey">
+        <figcaption className="px-0.5 pt-2 pb-0.5 font-mono text-[0.62rem] leading-relaxed text-grey">
           {caption}
         </figcaption>
       )}

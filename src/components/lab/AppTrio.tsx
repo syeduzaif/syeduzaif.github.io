@@ -1,5 +1,4 @@
 import { MediaFragment } from "./MediaFragment";
-import { Annotation } from "./Annotation";
 import { cn } from "@/lib/utils";
 
 export interface TrioApp {
@@ -9,9 +8,10 @@ export interface TrioApp {
 }
 
 /**
- * The three-app poster: Student, Teacher, and the attendance flow pinned side
- * by side like prints on the working wall — middle one lifted, outer two
- * tilted. Used as the SimpliEd cover on the homepage and case-study header.
+ * The three-app poster: Student, Teacher, and the attendance flow set side by
+ * side, upright and evenly ruled, with the middle frame lifted — the
+ * arrangement the design draws. Used as the SimpliEd cover on the homepage
+ * and the case-study header.
  */
 export function AppTrio({
   apps,
@@ -25,7 +25,6 @@ export function AppTrio({
   priority?: boolean;
   className?: string;
 }) {
-  const rotate = [-1.5, 0, 1.5];
   const lift = ["md:translate-y-2", "md:-translate-y-2", "md:translate-y-3"];
 
   return (
@@ -37,8 +36,6 @@ export function AppTrio({
             src={app.src}
             alt={app.alt}
             label={app.label}
-            rotate={rotate[i]}
-            taped={i !== 1}
             priority={priority}
             aspect="aspect-[9/19]"
             sizes="(max-width:768px) 30vw, 220px"
@@ -47,8 +44,8 @@ export function AppTrio({
         ))}
       </div>
       {note && (
-        <p className="mt-4">
-          <Annotation className="text-[0.92rem]">{note}</Annotation>
+        <p className="mt-4 font-mono text-[0.62rem] leading-relaxed tracking-[0.1em] text-grey uppercase">
+          {note}
         </p>
       )}
     </div>

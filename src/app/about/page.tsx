@@ -1,15 +1,15 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { timeline } from "@/data/timeline";
-import { principles, aboutStory } from "@/data/about";
+import { principles, aboutStory, aboutPage } from "@/data/about";
 import { routeMetadata } from "@/lib/seo";
-import { Container } from "@/components/ui/Container";
-import { Timeline } from "@/components/ui/Timeline";
-import { EditorialLabel } from "@/components/lab/EditorialLabel";
-import { MediaFragment } from "@/components/lab/MediaFragment";
-import { ProductNote } from "@/components/lab/ProductNote";
-import { Mark } from "@/components/lab/Mark";
 import { slugify } from "@/lib/utils";
+import { Container } from "@/components/ui/Container";
+import { Eyebrow } from "@/components/ui/Eyebrow";
+import { SpecTable } from "@/components/ui/SpecTable";
+import { Timeline } from "@/components/ui/Timeline";
+import { Reveal } from "@/components/ui/Reveal";
 
 export const metadata = routeMetadata({
   title: "About Syed Uzaif — Mobile Product Engineer",
@@ -18,104 +18,129 @@ export const metadata = routeMetadata({
   path: "/about/",
 });
 
+/** One part of the long-form story — mono index in the label column. */
+function StoryPart({
+  part,
+  n,
+}: {
+  part: (typeof aboutStory)[number];
+  n: string;
+}) {
+  const id = slugify(part.heading);
+  return (
+    <section
+      aria-labelledby={id}
+      className="grid gap-4 border-t border-rule pt-8 md:grid-cols-[4rem_1fr] md:gap-10"
+    >
+      <p
+        aria-hidden
+        className="font-mono text-[0.68rem] font-medium tracking-[0.16em] text-orange-deep"
+      >
+        {n}
+      </p>
+      <div>
+        <h2
+          id={id}
+          className="text-h3 [font-stretch:92%] text-ink text-balance"
+        >
+          {part.heading}
+        </h2>
+        <div className="mt-4 max-w-[66ch] space-y-4 text-grey">
+          {part.paragraphs.map((para) => (
+            <p key={para.slice(0, 48)}>{para}</p>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function AboutPage() {
   return (
     <article className="pt-28 pb-24 md:pt-36">
       <Container>
         <Link
-          href="/#about"
-          className="inline-flex items-center gap-1.5 font-mono text-[0.72rem] uppercase tracking-[0.14em] text-grey transition-colors hover:text-ink"
+          href={aboutPage.backHref}
+          className="inline-flex items-center gap-1.5 font-mono text-[0.68rem] tracking-[0.14em] text-grey uppercase transition-colors hover:text-ink"
         >
-          <ArrowLeft size={14} /> Back to the lab
+          <ArrowLeft size={14} /> {aboutPage.backLabel}
         </Link>
 
-        <div className="mt-8 grid gap-12 md:grid-cols-[0.9fr_1.1fr] md:items-center md:gap-16">
-          <MediaFragment
-            src="/images/profile.webp"
-            alt="Syed Uzaif, Mobile Product Engineer"
-            label="04 / About"
-            caption="Karachi → remote · Flutter by trade, storytelling by habit"
-            rotate={-1.5}
-            taped
-            eager
-            sizes="(max-width:768px) 80vw, 380px"
-            className="mx-auto w-full max-w-[380px] md:mx-0"
-          />
-
-          <div style={{ maxWidth: "var(--width-reading)" }}>
-            <EditorialLabel>The person behind the experiments</EditorialLabel>
-            <h1 className="mt-4 text-h2 text-ink text-balance">
-              I want to understand why something should exist.
+        {/* ------------------------------------------------------ masthead */}
+        <div className="mt-10 grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-end lg:gap-16">
+          <div>
+            <Eyebrow>{aboutPage.eyebrow}</Eyebrow>
+            <h1 className="mt-5 text-h2 [font-stretch:90%] text-ink text-balance">
+              {aboutPage.heading}
             </h1>
-            <p className="mt-6 text-lead text-grey">
-              I&apos;ve never been interested only in how something is built. I
-              want to understand{" "}
-              <Mark>why it should exist</Mark>, how people experience it, and
-              what makes it worth using.
+            <p className="mt-7 max-w-[52ch] text-lead text-grey">
+              {aboutPage.lead}
             </p>
           </div>
+
+          <figure>
+            <div className="relative aspect-[4/5] overflow-hidden bg-paper-soft">
+              <Image
+                src="/images/profile.webp"
+                alt={aboutPage.photoAlt}
+                fill
+                sizes="(max-width:1024px) 100vw, 420px"
+                loading="eager"
+                fetchPriority="high"
+                className="object-cover"
+              />
+              <figcaption className="absolute bottom-3 left-3 bg-paper px-2.5 py-1.5 font-mono text-[0.6rem] font-semibold tracking-[0.14em] text-ink uppercase">
+                {aboutPage.photoLabel}
+              </figcaption>
+            </div>
+            <p className="mt-3 font-mono text-[0.65rem] tracking-[0.1em] text-grey">
+              {aboutPage.photoCaption}
+            </p>
+          </figure>
         </div>
 
-        {/* Long-form story — numbered like the rest of the lab */}
-        <div
-          className="mt-16 space-y-12 md:mt-20"
-          style={{ maxWidth: "var(--width-reading)" }}
-        >
+        {/* --------------------------------------------------- long story */}
+        <div className="mt-20 border-t-2 border-ink pt-6 md:mt-28">
+          <Eyebrow tone="grey">{aboutPage.storyEyebrow}</Eyebrow>
+        </div>
+
+        <div className="mt-10 space-y-12">
           {aboutStory.map((part, i) => (
-            <section key={part.heading} aria-labelledby={slugify(part.heading)}>
-              <div className="flex items-baseline gap-3">
-                <span
-                  aria-hidden
-                  className="font-mono text-[0.72rem] text-orange-deep"
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h2
-                  id={slugify(part.heading)}
-                  className="font-display text-h3 text-ink"
-                >
-                  {part.heading}
-                </h2>
-              </div>
-              {part.paragraphs.map((para, j) => (
-                <p key={j} className="mt-4 text-grey">
-                  {para}
-                </p>
-              ))}
-            </section>
+            <Reveal key={part.heading}>
+              <StoryPart part={part} n={String(i + 1).padStart(2, "0")} />
+            </Reveal>
           ))}
         </div>
 
-        <div className="mt-16 grid gap-12 border-t border-ink/15 pt-16 md:grid-cols-2 md:gap-16">
+        {/* ------------------------------------- timeline + working notes */}
+        <div className="mt-20 grid gap-12 border-t-2 border-ink pt-10 md:mt-28 md:grid-cols-2 md:gap-16">
           <section aria-labelledby="journey">
-            <EditorialLabel>Timeline</EditorialLabel>
-            <h2 id="journey" className="mt-3 font-display text-h3 text-ink">
-              The journey
+            <Eyebrow tone="grey">{aboutPage.timelineEyebrow}</Eyebrow>
+            <h2
+              id="journey"
+              className="mt-3 text-h3 [font-stretch:92%] text-ink"
+            >
+              {aboutPage.timelineHeading}
             </h2>
-            <div className="mt-6">
-              <Timeline items={timeline} />
-            </div>
+            <Timeline items={timeline} className="mt-7" />
           </section>
 
           <section aria-labelledby="principles">
-            <EditorialLabel>Working notes</EditorialLabel>
-            <h2 id="principles" className="mt-3 font-display text-h3 text-ink">
-              How I work
+            <Eyebrow tone="grey">{aboutPage.principlesEyebrow}</Eyebrow>
+            <h2
+              id="principles"
+              className="mt-3 text-h3 [font-stretch:92%] text-ink"
+            >
+              {aboutPage.principlesHeading}
             </h2>
-            <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-6">
-              {principles.map((p, i) => (
-                <li key={p}>
-                  <ProductNote
-                    tone={i % 3 === 1 ? "paper" : "yellow"}
-                    rotate={[-2, 1.5, -1, 2, -1.5, 1][i % 6]}
-                    taped={i % 2 === 0}
-                    className="max-w-none"
-                  >
-                    {p}
-                  </ProductNote>
-                </li>
-              ))}
-            </ul>
+            <SpecTable
+              className="mt-7"
+              labelWidth="2.75rem"
+              rows={principles.map((p, i) => ({
+                label: String(i + 1).padStart(2, "0"),
+                value: p,
+              }))}
+            />
           </section>
         </div>
       </Container>

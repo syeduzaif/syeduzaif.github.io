@@ -1,5 +1,25 @@
 /** About-page content. */
 
+/**
+ * The About page masthead and its section labels. These used to be hardcoded
+ * in the page component; they live here so no user-facing string does.
+ */
+export const aboutPage = {
+  backLabel: "Back to the lab",
+  backHref: "/#about",
+  eyebrow: "The person behind the experiments",
+  heading: "I want to understand why something should exist.",
+  lead: "I've never been interested only in how something is built. I want to understand why it should exist, how people experience it, and what makes it worth using.",
+  photoAlt: "Syed Uzaif, Mobile Product Engineer",
+  photoLabel: "Karachi → remote",
+  photoCaption: "Flutter by trade, storytelling by habit",
+  storyEyebrow: "The long version",
+  timelineEyebrow: "Timeline",
+  timelineHeading: "The journey",
+  principlesEyebrow: "Working notes",
+  principlesHeading: "How I work",
+} as const;
+
 /** How I work — short principles list shown beside the timeline. */
 export const principles: string[] = [
   "Understand before building",
